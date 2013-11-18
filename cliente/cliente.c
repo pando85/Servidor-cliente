@@ -1,5 +1,3 @@
-
-
 #include <stdio.h>
 #include <stdlib.h>
 #include "../arbol.h"
@@ -26,8 +24,7 @@
 
 int main()
 {
-    int opcion; // opción del menu
-    int d,err; // dato para insertar/buscar/borrar , err para buscar errores
+    int *dato,d,err; // dato para insertar/buscar/borrar , err para buscar errores
     int Q1,Q2,memo; // Identificadores colas y mem compartida
 
     key_t llave1, llave2,keymemo; // llaves para la creacion de colas y memoria compartida
@@ -36,7 +33,7 @@ int main()
 
 
     struct mens_peticion peticion;
-	struct mens_respuesta respuesta;
+    struct mens_respuesta respuesta;
 
 
 
@@ -59,7 +56,7 @@ int main()
         printf("¡Error! No esta ejecutado el servidor.\n");
         exit(-1);
     }
-	Q2= msgget(llave2, 0);
+    Q2= msgget(llave2, 0);
     if(Q2==-1)
     {
         printf("¡Error! No esta ejecutado el servidor.\n");
@@ -100,6 +97,9 @@ int main()
     sem_wait(s1);
 
 
+    dato=shmat(memo,0,0);
+
+
     // Petición de alta
     peticion.tipo=getpid();
     peticion.cod_op=0;
@@ -109,7 +109,7 @@ int main()
 
 
     /************************MENÚ*********************************/
-    while(opcion!=4)
+    while(peticion.cod_op!=4)
     {
         printf("\n\n\n\n");
         printf("1. Insertar elemento por valor\n");
@@ -118,12 +118,13 @@ int main()
         printf("4. Salir\n");
 
         __fpurge(stdin);
-        scanf("%d",&opcion);
+        scanf("%d",&peticion.cod_op);
+        msgsnd(Q1, &peticion,sizeof(int),0);
         printf("\n\n\n");
 
-        switch(opcion)
+        switch(peticion.cod_op)
         {
-
+            // INSERTAR
         case 1:
             printf("Introduzca el dato que desea insertar:");
             fflush(stdin);
@@ -131,7 +132,13 @@ int main()
             if(err==0)
                 printf("\nNo se ha introducido ningún entero, por favor inténtelo de nuevo.\n");
             else
- //               raiz=InsertarElemento(raiz,d);
+            {
+
+
+                sem_wait(mutex);
+                *dato=d;
+                sem_post(mutex);
+            }
             break;
         case 2:
             printf("Introduzca el dato que desea buscar:");
@@ -143,14 +150,14 @@ int main()
                 break;
             }
 
- //           if (Buscar(raiz,d)==NULL) //Resultado de buscar el dato
+//           if (Buscar(raiz,d)==NULL) //Resultado de buscar el dato
 //            {
- //               printf("\nEl dato no se encuentra en el árbol.");
-  //          }
-   //         else
-    //        {
-     //           printf("\nEl dato se encuentra en el árbol.");
-      //      }
+//               printf("\nEl dato no se encuentra en el árbol.");
+            //          }
+            //         else
+            //        {
+            //           printf("\nEl dato se encuentra en el árbol.");
+            //      }
             break;
         case 3:
             printf("Introduzca el dato que desea borrar:");
@@ -159,10 +166,10 @@ int main()
             if(err==0)
                 printf("\nNo se ha introducido ningún entero, por favor inténtelo de nuevo.\n");
             else
-    //            raiz=Borrar(raiz,d);
-            break;
-
+                //            raiz=Borrar(raiz,d);
+                break;
         }
+        msgrcv(Q2,&respuesta,sizeof(int),getpid(),0);
     }
     return 0;
 }
