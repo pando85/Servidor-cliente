@@ -1,0 +1,53 @@
+# depslib dependency file v1.0
+1382646685 source:/Datos/Alex/Clase/5 curso/Computadores/Practicas/Practica 2/Programa/borrar.c
+	<stdio.h>
+	<stdlib.h>
+	"arbol.h"
+
+1384777941 /Datos/Alex/Clase/5 curso/Computadores/Practicas/Practica 2/Programa/arbol.h
+	<semaphore.h>
+
+1382646874 source:/Datos/Alex/Clase/5 curso/Computadores/Practicas/Practica 2/Programa/buscar.c
+	<stdio.h>
+	<stdlib.h>
+	"arbol.h"
+
+1384729192 source:/Datos/Alex/Clase/5 curso/Computadores/Practicas/Practica 2/Programa/cargar.c
+	<stdio.h>
+	<stdlib.h>
+	"arbol.h"
+
+1384724339 source:/Datos/Alex/Clase/5 curso/Computadores/Practicas/Practica 2/Programa/guardar.c
+	<stdio.h>
+	<stdlib.h>
+	"arbol.h"
+
+1382366454 source:/Datos/Alex/Clase/5 curso/Computadores/Practicas/Practica 2/Programa/insertar.c
+	<stdio.h>
+	<stdlib.h>
+	"arbol.h"
+
+1382366407 source:/Datos/Alex/Clase/5 curso/Computadores/Practicas/Practica 2/Programa/visualizar.c
+	<stdio.h>
+	<stdlib.h>
+	"arbol.h"
+
+1384785396 source:/Datos/Alex/Clase/5 curso/Computadores/Practicas/Practica 2/Programa/main.c
+	<stdio.h>
+	<stdlib.h>
+	"arbol.h"
+	<sys/ipc.h>
+	<sys/msg.h>
+	<sys/shm.h>
+	<sys/errno.h>
+	<errno.h>
+	<semaphore.h>
+	<fcntl.h>
+	<signal.h>
+
+1384785574 source:/Datos/Alex/Clase/5 curso/Computadores/Practicas/Practica 2/Programa/baja.c
+	<stdio.h>
+	<stdlib.h>
+	"arbol.h"
+	<signal.h>
+
