@@ -163,7 +163,7 @@ int main(int argc, char *argv[])
         case 1:
             sem_wait(mutex);
             raizarbol=InsertarElemento(raizarbol,*dato);
- //           sem_post(mutex);
+//           sem_post(mutex);
             break;
             // BORRAR
         case 2:
@@ -209,8 +209,8 @@ int main(int argc, char *argv[])
         printf("\n\n");
 
 
-  }
-        // Guardar fichero
+    }
+    // Guardar fichero
     GuardarFichero(raizarbol);
 
     // Borrar colas
