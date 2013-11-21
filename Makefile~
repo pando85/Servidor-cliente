@@ -6,8 +6,7 @@ CFLAGS =
 
 .PHONY: default all clean
 
-default: $(TARGET)
-	make -C cliente all 
+default: $(TARGET) 
 all: default
 
 #Debug: bin/Debug/Arbol\ binario
@@ -20,9 +19,11 @@ HEADERS = $(wildcard *.h)
 
 .PRECIOUS: $(TARGET) $(OBJECTS)
 
-$(TARGET): $(OBJECTS)
+$(TARGET): $(OBJECTS) cliente
 	$(CC) $(OBJECTS) -Wall $(LIBS) -o $@
 
+cliente:
+	make -C cliente all
 
 clean:
 	-rm -f *.o

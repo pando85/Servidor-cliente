@@ -109,7 +109,7 @@ int main(int argc, char *argv[])
 
 
     // Creo e inicializo semaforo mutex a 1
-    mutex=sem_open(MUTEX, O_CREAT, PERMS, 1);
+    mutex=sem_open(MUTEX, O_CREAT, PERMS, 0);
     if(mutex==SEM_FAILED)
     {
         printf("¡Error! No se pudo abrir el semaforo, fallo con errno = %d\n",errno);
@@ -132,6 +132,12 @@ int main(int argc, char *argv[])
 
     // Cargar fichero
     raizarbol=CargarOrdenado(raizarbol);
+
+    if(raizarbol==NULL)
+    {
+        printf("¡Error! No se pudo cargar el arbol.\n");
+        esta_proceso_terminado=TRUE;
+    }
 
     // Ctrl-C cierra_programa
     signal (SIGINT,cerrar_programa);
@@ -157,7 +163,7 @@ int main(int argc, char *argv[])
         case 1:
             sem_wait(mutex);
             raizarbol=InsertarElemento(raizarbol,*dato);
-            sem_post(mutex);
+ //           sem_post(mutex);
             break;
             // BORRAR
         case 2:

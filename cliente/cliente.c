@@ -109,7 +109,7 @@ int main()
 
 
     /************************MENÚ*********************************/
-    while(peticion.codigo_operacion!=4)
+    while(1)//peticion.codigo_operacion!=4
     {
         printf("\n\n\n\n");
         printf("1. Insertar elemento por valor\n");
@@ -135,7 +135,7 @@ int main()
             {
 
 
-                sem_wait(mutex);
+//                sem_wait(mutex);
                 *dato=d;
                 sem_post(mutex);
             }

@@ -1,5 +1,4 @@
-
-TARGET = servidor
+TARGET = cliente
 LIBS = -lpthread
 CC = gcc
 CFLAGS =
@@ -7,7 +6,6 @@ CFLAGS =
 .PHONY: default all clean
 
 default: $(TARGET)
-	make -C cliente all 
 all: default
 
 #Debug: bin/Debug/Arbol\ binario
@@ -24,7 +22,8 @@ $(TARGET): $(OBJECTS)
 	$(CC) $(OBJECTS) -Wall $(LIBS) -o $@
 
 
+
 clean:
 	-rm -f *.o
 	-rm -f $(TARGET)
-	make -C cliente clean
+
