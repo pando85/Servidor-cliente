@@ -22,3 +22,5 @@
 servidor
 cliente
 
+# scripts bash
+*.sh
