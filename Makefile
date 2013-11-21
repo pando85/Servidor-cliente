@@ -1,4 +1,3 @@
-#siempre actualiza cliente
 
 TARGET = servidor
 LIBS = -lpthread
@@ -23,20 +22,10 @@ HEADERS = $(wildcard *.h)
 $(TARGET): $(OBJECTS)
 	$(CC) $(OBJECTS) -Wall $(LIBS) -o $@
 
-#bin/Debug/Arbol\ binario: $(OBJECTS)
-#	$(CC) $(OBJECTS) -Wall -g $(LIBS) -o bin/Debug/Arbol\ binario
-
-cliente/cliente.o:cliente/cliente.c $(HEADERS)
-	$(CC) $(CFLAGS) -c cliente/cliente.c -o cliente/cliente.o
-
-#cliente/get.o:cliente/get.c $(HEADERS)
-#	$(CC) $(CFLAGS) -c cliente/get.c -o cliente/get.o
-
-cliente: cliente/cliente.o
-	$(CC) cliente/cliente.o  -Wall $(LIBS) -o client
+cliente:
+	make -C cliente all
 
 clean:
 	-rm -f *.o
 	-rm -f $(TARGET)
-	-rm -f cliente/*.o
-	-rm -f client
+	make -C cliente clean

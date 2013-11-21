@@ -6,9 +6,13 @@
 /*                                                                               */
 /***********************************************************************/
 #include <semaphore.h>
+#define FALSE 0
+#define TRUE 1
 
 
 /*************************************VARIABLES GLOBALES************************************/
+int esta_proceso_terminado;
+
 typedef struct NodoArbol
 {
     int dato;
@@ -16,21 +20,19 @@ typedef struct NodoArbol
     struct NodoArbol *izq;
 } Nodo;
 
-struct mens_peticion
+struct mensaje_peticion
 {
 	long tipo;
-	int cod_op;
+	int codigo_operacion;
 };
 
-struct mens_respuesta
+struct mensaje_respuesta
 {
 	long tipo;
-	int cod_err;
+	int codigo_error;
 };
 
-Nodo *raizarbol;
-int *vector_clientes;
-int num_clientes;
+
 
 
 

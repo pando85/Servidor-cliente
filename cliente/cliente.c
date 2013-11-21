@@ -32,8 +32,8 @@ int main()
 
 
 
-    struct mens_peticion peticion;
-    struct mens_respuesta respuesta;
+    struct mensaje_peticion peticion;
+    struct mensaje_respuesta respuesta;
 
 
 
@@ -102,14 +102,14 @@ int main()
 
     // Petición de alta
     peticion.tipo=getpid();
-    peticion.cod_op=0;
+    peticion.codigo_operacion=0;
     msgsnd(Q1, &peticion,sizeof(int),0);
     msgrcv(Q2,&respuesta,sizeof(int),getpid(),0);
 
 
 
     /************************MENÚ*********************************/
-    while(peticion.cod_op!=4)
+    while(peticion.codigo_operacion!=4)
     {
         printf("\n\n\n\n");
         printf("1. Insertar elemento por valor\n");
@@ -118,11 +118,11 @@ int main()
         printf("4. Salir\n");
 
         __fpurge(stdin);
-        scanf("%d",&peticion.cod_op);
+        scanf("%d",&peticion.codigo_operacion);
         msgsnd(Q1, &peticion,sizeof(int),0);
         printf("\n\n\n");
 
-        switch(peticion.cod_op)
+        switch(peticion.codigo_operacion)
         {
             // INSERTAR
         case 1:

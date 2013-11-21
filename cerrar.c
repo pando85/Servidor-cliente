@@ -9,7 +9,12 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "arbol.h"
+
+#ifndef CABECERA_INCLUIDA
+    #define CABECERA_INCLUIDA
+    #include "arbol.h"
+#endif
+
 #include <sys/ipc.h>
 #include <sys/msg.h>
 #include <sys/shm.h>
@@ -39,6 +44,7 @@
 
 void cerrar_programa(int sig)
 {
+    esta_proceso_terminado = TRUE;
     int i;
     key_t llave1, llave2,keymemo; // llaves para la creacion de colas y memoria compartida
     sem_t *s1, *mutex; // punteros para identificador de los semaforos
@@ -101,33 +107,7 @@ void cerrar_programa(int sig)
         exit(-1);
     }
 
-    // Guardar fichero
-    GuardarFichero(raizarbol);
 
-    // Borrar colas
-    msgctl(Q1, IPC_RMID, 0);
-    msgctl(Q2, IPC_RMID, 0);
-
-
-
-    // Cerrar clientes
-    for(i=0; i<num_clientes; i++)
-    {
-        kill(vector_clientes[i],SIGINT);
-    }
-
-    // Liberar memoria
-    free(vector_clientes);
-
-
-    // Cerrar y borrar semaforos
-    sem_close(mutex);
-    sem_close(s1);
-    sem_unlink(MUTEX);
-    sem_unlink(S1);
-    printf("c");
-    // Destruye la memoria compartida
-    shmctl(memo, IPC_RMID, 0);
 
     exit(0);
     return ;
