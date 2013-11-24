@@ -5,27 +5,12 @@
 /*                                                                        */
 /*****************************************************************/
 
-#include <stdio.h>
-#include <stdlib.h>
 
 #ifndef CABECERA_INCLUIDA
 #define CABECERA_INCLUIDA
 #include "arbol.h"
 #endif
 
-#include <sys/ipc.h>
-#include <sys/msg.h>
-#include <sys/shm.h>
-#include <sys/errno.h>
-#include <errno.h>
-#include <semaphore.h>
-#include <fcntl.h>
-#include <signal.h>
-
-
-#define PERMS 0600
-#define MUTEX "/raro123"
-#define S1 "/ouyea123"
 /*****************************************************************/
 /* Nombre: main()                                                         */
 /* Descripción: Carga el menú principal.                                  */
@@ -34,12 +19,21 @@
 /* Alexander Gil Casas. 2013.                                             */
 /*****************************************************************/
 
+int inicializar_cola(char nombre[], int id, key_t *llave, int *cola);
 
 int main(int argc, char *argv[])
 {
-    int Q1,Q2,memo,max_clientes,*dato,i; // dato para insertar/buscar/borrar , err para buscar errores,Q1 cola 1,Q2 cola 2,max_clientes,longitud mensaje
-    key_t llave1, llave2,keymemo; // llaves para la creacion de colas y memoria compartida
-    sem_t *s1, *mutex; // punteros para identificador de los semaforos
+    int Q1; // Cola 1
+    int Q2; // Cola 2
+    int memo;
+    int max_clientes;
+    int *dato;
+    int i;
+    key_t llave_q1; // llaves para la creacion de colas y memoria compartida
+    key_t llave_q2;
+    key_t keymemo;
+    sem_t *s1;
+    sem_t *mutex; // punteros para identificador de los semaforos
 
     struct mensaje_peticion peticion;
     struct mensaje_respuesta respuesta;
@@ -56,6 +50,7 @@ int main(int argc, char *argv[])
         printf("\n¡Error! Debe introducir el nº maximo de clientes como argumento.\n\n");
         exit(-1);
     }
+
     max_clientes=atoi(argv[1]);
     if(max_clientes==0)
     {
@@ -63,35 +58,17 @@ int main(int argc, char *argv[])
         exit(-1);
     }
 
-
-
     // CREANDO LAS COLAS
-    llave1=ftok("/bin",'3');
-    if(llave1==-1)
+    if(inicializar_cola("/bin", 3, &llave_q1, &Q1) != TRUE)
     {
-        printf("¡Error! ftok fallo con errno = %d\n",errno);
+        fprintf(stderr, "\nNo se pudo crear la cola 1.\n\n");
         exit(-1);
     }
-    llave2=ftok("/bin",'4');
-    if(llave2==-1)
+    if(inicializar_cola("/bin", 4, &llave_q2, &Q2) != TRUE)
     {
-        printf("¡Error! ftok fallo con errno = %d\n",errno);
+        fprintf(stderr, "\nNo se pudo crear la cola 2.\n\n");
         exit(-1);
     }
-    Q1 = msgget(llave1, PERMS | IPC_CREAT);
-    if(Q1==-1)
-    {
-        printf("¡Error! Al crear colas fallo con errno = %d\n",errno);
-        exit(-1);
-    }
-    Q2 = msgget(llave2, PERMS | IPC_CREAT);
-    if(Q2==-1)
-    {
-        printf("¡Error! Al crear colas fallo con errno = %d\n",errno);
-        exit(-1);
-    }
-
-
 
     // Creo memoria compartida
     keymemo=ftok("/bin",'5');
@@ -126,7 +103,7 @@ int main(int argc, char *argv[])
 
 
     //Vector con los pids de los clientes
-    vector_clientes=malloc(max_clientes*sizeof(pid_t));
+    vector_clientes=(int *)(malloc(max_clientes*sizeof(pid_t)));
 
 
 
@@ -242,5 +219,20 @@ int main(int argc, char *argv[])
     return 0;
 }
 
+int inicializar_cola(char nombre[], int id, key_t *llave, int *cola)
+{
+    *llave = ftok(nombre, id);
+    if(*llave == -1)
+    {
+        fprintf(stderr, "\nError creando token de cola.\n\n");
+        return errno;
+    }
 
-
+    *cola = msgget(*llave, PERMS | IPC_CREAT);
+    if(*cola == 1)
+    {
+        fprintf(stderr, "\nError durante la creación de la cola.\n\n");
+        return errno;
+    }
+    return TRUE;
+}

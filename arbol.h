@@ -5,9 +5,24 @@
 /*                                                                               */
 /*                                                                               */
 /***********************************************************************/
-#include <semaphore.h>
 #define FALSE 0
 #define TRUE 1
+
+#define PERMS 0600
+#define MUTEX "/raro123"
+#define S1 "/ouyea123"
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+#include <sys/ipc.h>
+#include <sys/msg.h>
+#include <sys/shm.h>
+#include <errno.h>
+#include <semaphore.h>
+#include <fcntl.h>
+#include <signal.h>
 
 
 /*************************************VARIABLES GLOBALES************************************/
@@ -31,20 +46,6 @@ struct mensaje_respuesta
 	long tipo;
 	int codigo_error;
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

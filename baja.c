@@ -6,17 +6,10 @@
 /* Contar()                                                                      */
 /***********************************************************************/
 
-
-#include <stdio.h>
-#include <stdlib.h>
-
 #ifndef CABECERA_INCLUIDA
     #define CABECERA_INCLUIDA
     #include "arbol.h"
 #endif
-
-#include <signal.h>
-
 /*****************************************************************/
 /* Nombre: Cargar()                                                       */
 /* Descripción: Carga datos de un fichero de números enteros.             */

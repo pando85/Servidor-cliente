@@ -7,27 +7,11 @@
 /*                                                                        */
 /*****************************************************************/
 
-#include <stdio.h>
-#include <stdlib.h>
 
 #ifndef CABECERA_INCLUIDA
     #define CABECERA_INCLUIDA
     #include "arbol.h"
 #endif
-
-#include <sys/ipc.h>
-#include <sys/msg.h>
-#include <sys/shm.h>
-#include <sys/errno.h>
-#include <errno.h>
-#include <semaphore.h>
-#include <fcntl.h>
-#include <signal.h>
-
-
-#define PERMS 0600
-#define MUTEX "/raro123"
-#define S1 "/ouyea123"
 
 /*****************************************************************/
 /* Nombre: main()                                                         */
