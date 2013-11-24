@@ -19,31 +19,45 @@
 /* Alexander Gil Casas. 2013.                                             */
 /*****************************************************************/
 
-int inicializar_cola(char nombre[], int id, key_t *llave, int *cola);
+int Q1 = -1;
+int Q2 = -1;
+int memo = -1;
+int max_clientes;
+int *dato = NULL;
+sem_t *s1 = NULL;
+sem_t *mutex = NULL;
+
+Nodo *raizarbol = NULL;
+int *vector_clientes = NULL;
+int num_clientes = 0;
+
+// Cabeceras de funciones
+int preparar_entorno();
+int inicializar_cola(char nombre[], int id);
+int inicializar_memoria_compartida(char nombre[], int id);
+sem_t *inicializar_semaforo(char nombre[], int valor_inicial);
+int *inicializar_clientes(int numero_clientes);
+int *get_inicio_memoria_compartida(int memoria_compartida);
+int es_cola_correcta(int cola);
+int es_memoria_correcta(int memoria_compartida);
+int es_semaforo_correcto(sem_t *semaforo);
+int son_clientes_correctos(int *clientes);
+int es_arbol_correcto(Nodo *arbol);
+void limpiar_entorno();
+void borrar_cola(int cola);
+void cerrar_clientes(int *clientes, int numero_clientes);
+void cerrar_semaforo(sem_t *semaforo, char nombre[]);
+void liberar_memoria_compartida(int memoria_compartida);
 
 int main(int argc, char *argv[])
 {
-    int Q1; // Cola 1
-    int Q2; // Cola 2
-    int memo;
-    int max_clientes;
-    int *dato;
     int i;
-    key_t llave_q1; // llaves para la creacion de colas y memoria compartida
-    key_t llave_q2;
-    key_t keymemo;
-    sem_t *s1;
-    sem_t *mutex; // punteros para identificador de los semaforos
 
     struct mensaje_peticion peticion;
     struct mensaje_respuesta respuesta;
 
-    Nodo *raizarbol=NULL;// Árbol vacío
-    int *vector_clientes;
-    int num_clientes;
+    esta_proceso_terminado = FALSE;
 
-    num_clientes=0; // Inicializamos el numero de clientes
-    esta_proceso_terminado= FALSE;
     // Comprobación si se ha introducido el número máximo de clientes
     if(argc!=2)
     {
@@ -52,80 +66,18 @@ int main(int argc, char *argv[])
     }
 
     max_clientes=atoi(argv[1]);
-    if(max_clientes==0)
+    if(max_clientes == 0)
     {
         printf("\n¡Error! Debe introducir el nº maximo de clientes como argumento.\n\n");
         exit(-1);
     }
 
-    // CREANDO LAS COLAS
-    if(inicializar_cola("/bin", 3, &llave_q1, &Q1) != TRUE)
-    {
-        fprintf(stderr, "\nNo se pudo crear la cola 1.\n\n");
-        exit(-1);
-    }
-    if(inicializar_cola("/bin", 4, &llave_q2, &Q2) != TRUE)
-    {
-        fprintf(stderr, "\nNo se pudo crear la cola 2.\n\n");
-        exit(-1);
-    }
-
-    // Creo memoria compartida
-    keymemo=ftok("/bin",'5');
-    if(keymemo==-1)
-    {
-        printf("¡Error! ftok fallo con errno = %d\n",errno);
-        exit(-1);
-    }
-    memo=shmget(keymemo,sizeof(int),IPC_CREAT | PERMS);
-    if(memo==-1)
-    {
-        printf("¡Error! No se pudo acceder a la memoria compartida, fallo con errno = %d\n",errno);
-        exit(-1);
-    }
-
-
-    // Creo e inicializo semaforo mutex a 1
-    mutex=sem_open(MUTEX, O_CREAT, PERMS, 0);
-    if(mutex==SEM_FAILED)
-    {
-        printf("¡Error! No se pudo abrir el semaforo, fallo con errno = %d\n",errno);
-        exit(-1);
-    }
-
-    // Creo e inicializo semaforo s1 a max_clientes
-    s1=sem_open(S1,O_CREAT,PERMS,max_clientes);
-    if(s1==SEM_FAILED)
-    {
-        printf("¡Error! No se pudo abrir el semaforo, fallo con errno = %d\n",errno);
-        exit(-1);
-    }
-
-
-    //Vector con los pids de los clientes
-    vector_clientes=(int *)(malloc(max_clientes*sizeof(pid_t)));
-
-
-
-    // Cargar fichero
-    raizarbol=CargarOrdenado(raizarbol);
-
-    if(raizarbol==NULL)
-    {
-        printf("¡Error! No se pudo cargar el arbol.\n");
-        esta_proceso_terminado=TRUE;
-    }
-
-    // Ctrl-C cierra_programa
-    signal (SIGINT,cerrar_programa);
-
-    // Dato apunta a la memoria compartida
-    dato=shmat(memo,0,0);
-
+    if (!preparar_entorno())
+        esta_proceso_terminado = TRUE;
 
     while(!esta_proceso_terminado)
     {
-        msgrcv(Q1,&peticion,sizeof(int),0,0);
+        msgrcv(Q1, &peticion, sizeof(int), 0, 0);
         respuesta.tipo=peticion.tipo;
         switch(peticion.codigo_operacion)
         {
@@ -174,9 +126,6 @@ int main(int argc, char *argv[])
                 respuesta.codigo_error=1;
             }
             break;
-
-
-
         }
 
         msgsnd(Q2, &respuesta, sizeof(int),0);
@@ -184,55 +133,213 @@ int main(int argc, char *argv[])
         printf("\n\n");
         Visualizar(raizarbol);
         printf("\n\n");
-
-
-    }
-    // Guardar fichero
-    GuardarFichero(raizarbol);
-
-    // Borrar colas
-    msgctl(Q1, IPC_RMID, 0);
-    msgctl(Q2, IPC_RMID, 0);
-
-
-
-    // Cerrar clientes
-    for(i=0; i<num_clientes; i++)
-    {
-        kill(vector_clientes[i],SIGINT);
     }
 
-    // Liberar memoria
-    free(vector_clientes);
-
-
-    // Cerrar y borrar semaforos
-    sem_close(mutex);
-    sem_close(s1);
-    sem_unlink(MUTEX);
-    sem_unlink(S1);
-
-    // Destruye la memoria compartida
-    shmctl(memo, IPC_RMID, 0);
-
+    limpiar_entorno();
 
     return 0;
 }
 
-int inicializar_cola(char nombre[], int id, key_t *llave, int *cola)
+int preparar_entorno()
 {
-    *llave = ftok(nombre, id);
-    if(*llave == -1)
+    Q1 = inicializar_cola("/bin", 3);
+    if(!es_cola_correcta(Q1))
     {
-        fprintf(stderr, "\nError creando token de cola.\n\n");
-        return errno;
+        printf("\nNo se pudo crear la cola 1.\n\n");
+        return FALSE;
     }
 
-    *cola = msgget(*llave, PERMS | IPC_CREAT);
-    if(*cola == 1)
+    Q2 = inicializar_cola("/bin", 4);
+    if (!es_cola_correcta(Q2))
+    {
+        printf("\nNo se pudo crear la cola 2.\n\n");
+        return FALSE;
+    }
+
+    memo = inicializar_memoria_compartida("/bin", 5);
+    if(!es_memoria_correcta(memo))
+    {
+        printf("\nNo se pudo inicializar la memoria compartida.\n\n");
+        return FALSE;
+    }
+
+    // Creo e inicializo semaforo mutex a 1
+    mutex = inicializar_semaforo(MUTEX, 1);
+    if (!es_semaforo_correcto(mutex))
+    {
+        printf("\nError inicializando semaforo MutEx.\n\n");
+        return FALSE;
+    }
+
+    // Creo e inicializo semaforo s1 a max_clientes
+    s1 = inicializar_semaforo(S1, max_clientes);
+    if(!es_semaforo_correcto(s1))
+    {
+        printf("\nError inicializando semaforo S1.\n\n");
+        return FALSE;
+    }
+
+
+    //Vector con los pids de los clientes
+    vector_clientes = inicializar_clientes(max_clientes);
+    if (!son_clientes_correctos(vector_clientes))
+    {
+        printf("\nError inicializando espacio de clientes.\n\n");
+        return FALSE;
+    }
+
+    // Cargar fichero
+    raizarbol=CargarOrdenado(raizarbol);
+
+    if(!es_arbol_correcto(raizarbol))
+    {
+        printf("¡Error! No se pudo cargar el arbol.\n");
+        return FALSE;
+    }
+
+    // Ctrl-C cierra_programa
+    signal (SIGINT,cerrar_programa);
+
+    // Dato apunta a la memoria compartida
+    dato = get_inicio_memoria_compartida(memo);
+
+    return TRUE;
+}
+
+int inicializar_cola(char nombre[], int id)
+{
+    int cola;
+
+    key_t llave = ftok(nombre, id);
+    if(llave < 0)
+    {
+        fprintf(stderr, "\nError creando token de cola.\n\n");
+        return -1;
+    }
+
+    cola = msgget(llave, PERMS | IPC_CREAT);
+    if(cola < 0)
     {
         fprintf(stderr, "\nError durante la creación de la cola.\n\n");
-        return errno;
+        return -1;
     }
-    return TRUE;
+    return cola;
+}
+
+int es_cola_correcta(int cola)
+{
+    return cola >= 0;
+}
+
+int inicializar_memoria_compartida(char nombre[], int id)
+{
+    int memoria;
+
+    key_t keymemo=ftok("/bin",'5');
+    if(keymemo < 0)
+    {
+        printf("¡Error! Fallo recuperando token de mem. compartida. [ERROR %d]\n", errno);
+        return -1;
+    }
+
+    memoria = shmget(keymemo, sizeof(int), IPC_CREAT | PERMS);
+    if(memoria < 0)
+    {
+        printf("¡Error! No se pudo acceder a la memoria compartida, [ERROR %d]\n", errno);
+        return -1;
+    }
+}
+
+int es_memoria_correcta(int memoria_compartida)
+{
+    return memoria_compartida >= 0;
+}
+
+sem_t *inicializar_semaforo(char nombre[], int valor_inicial)
+{
+    sem_t *mutex;
+
+    mutex = sem_open(nombre, O_CREAT, PERMS, valor_inicial);
+    if(mutex == SEM_FAILED)
+    {
+        printf("¡Error! No se pudo abrir el semaforo, fallo con errno = %d\n",errno);
+        return NULL;
+    }
+    return mutex;
+}
+
+int es_semaforo_correcto(sem_t *semaforo)
+{
+    return semaforo != NULL;
+}
+
+int *inicializar_clientes(int numero_clientes)
+{
+    size_t tamanyo_memoria = sizeof(pid_t) * (size_t)numero_clientes;
+    return (int *)malloc(tamanyo_memoria);
+}
+
+int son_clientes_correctos(int *clientes)
+{
+    return clientes != NULL;
+}
+
+int *get_inicio_memoria_compartida(int memoria_compartida)
+{
+    return (int *)shmat(memoria_compartida, 0, 0);
+}
+
+int es_arbol_correcto(Nodo *arbol)
+{
+    return arbol != NULL;
+}
+
+void limpiar_entorno()
+{
+    GuardarFichero(raizarbol);
+
+    borrar_cola(Q1);
+    borrar_cola(Q2);
+
+    cerrar_clientes(vector_clientes, num_clientes);
+
+    cerrar_semaforo(mutex, MUTEX);
+    cerrar_semaforo(s1, S1);
+
+    liberar_memoria_compartida(memo);
+}
+
+void borrar_cola(int cola)
+{
+    msgctl(cola, IPC_RMID, 0);
+}
+
+void cerrar_clientes(int *clientes, int numero_clientes)
+{
+    if (!son_clientes_correctos(clientes))
+        return;
+
+    int i;
+    for(i = 0; i < numero_clientes; i++)
+    {
+        kill(clientes[i], SIGINT);
+    }
+
+    free(vector_clientes);
+}
+
+void cerrar_semaforo(sem_t *semaforo, char nombre[])
+{
+    if (!es_semaforo_correcto(semaforo))
+        return;
+    sem_close(semaforo);
+    sem_unlink(nombre);
+}
+
+void liberar_memoria_compartida(int memoria_compartida)
+{
+    if (!es_memoria_correcta(memoria_compartida))
+        return;
+
+    shmctl(memoria_compartida, IPC_RMID, 0);
 }
