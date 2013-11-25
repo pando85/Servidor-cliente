@@ -11,8 +11,8 @@
 
 
 #define PERMS 0600
-#define MUTEX "/raro123"
-#define S1 "/ouyea123"
+#define MUTEX "/semMUTEX"
+#define S1 "/semS1"
 /*****************************************************************/
 /* Nombre: main()                                                         */
 /* Descripción: Carga el menú principal.                                  */
@@ -94,6 +94,7 @@ int main()
 
 
     // Bloqueo si n_clientes>nmax_clientes
+    printf("Esperando hueco en el servidor...\n");
     sem_wait(s1);
 
 
@@ -101,6 +102,7 @@ int main()
 
 
     // Petición de alta
+    printf("Petición de alta en el servidor...\n");
     peticion.tipo=getpid();
     peticion.codigo_operacion=0;
     msgsnd(Q1, &peticion,sizeof(int),0);
@@ -116,60 +118,28 @@ int main()
         printf("2. Busca elemento en árbol\n");
         printf("3. Borrar elemento por valor\n");
         printf("4. Salir\n");
+        printf("\n\n\n");
 
         __fpurge(stdin);
         scanf("%d",&peticion.codigo_operacion);
-        msgsnd(Q1, &peticion,sizeof(int),0);
-        printf("\n\n\n");
 
-        switch(peticion.codigo_operacion)
+
+        printf("\nIntroduzca el dato:");
+        fflush(stdin);
+        err=scanf("%d",&d);
+        if(err==0)
         {
-            // INSERTAR
-        case 1:
-            printf("Introduzca el dato que desea insertar:");
-            fflush(stdin);
-            err=scanf("%d",&d);
-            if(err==0)
-                printf("\nNo se ha introducido ningún entero, por favor inténtelo de nuevo.\n");
-            else
-            {
-
-
-//                sem_wait(mutex);
-                *dato=d;
-                sem_post(mutex);
-            }
-            break;
-        case 2:
-            printf("Introduzca el dato que desea buscar:");
-            fflush(stdin);
-            err=scanf("%d",&d);
-            if(err==0)
-            {
-                printf("\nNo se ha introducido ningún entero, por favor inténtelo de nuevo.\n");
-                break;
-            }
-
-//           if (Buscar(raiz,d)==NULL) //Resultado de buscar el dato
-//            {
-//               printf("\nEl dato no se encuentra en el árbol.");
-            //          }
-            //         else
-            //        {
-            //           printf("\nEl dato se encuentra en el árbol.");
-            //      }
-            break;
-        case 3:
-            printf("Introduzca el dato que desea borrar:");
-            fflush(stdin);
-            err=scanf("%d",&d);
-            if(err==0)
-                printf("\nNo se ha introducido ningún entero, por favor inténtelo de nuevo.\n");
-            else
-                //            raiz=Borrar(raiz,d);
-                break;
+            printf("\nNo se ha introducido ningún entero, por favor inténtelo de nuevo.\n");
         }
-        msgrcv(Q2,&respuesta,sizeof(int),getpid(),0);
+        else
+        {
+            sem_wait(mutex);
+            msgsnd(Q1, &peticion,sizeof(int),0);
+            *dato=d;
+            sem_post(mutex);
+            msgrcv(Q2,&respuesta,sizeof(int),getpid(),0);
+        }
+
     }
     return 0;
 }

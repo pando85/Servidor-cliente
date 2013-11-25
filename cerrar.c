@@ -1,5 +1,4 @@
 
-
 /*****************************************************************/
 /* Nombre: main.c                                                         */
 /* Contiene la función principal del programa con el menú:                */
@@ -11,8 +10,8 @@
 #include <stdlib.h>
 
 #ifndef CABECERA_INCLUIDA
-    #define CABECERA_INCLUIDA
-    #include "arbol.h"
+#define CABECERA_INCLUIDA
+#include "arbol.h"
 #endif
 
 #include <sys/ipc.h>
@@ -26,8 +25,10 @@
 
 
 #define PERMS 0600
-#define MUTEX "/raro123"
-#define S1 "/ouyea123"
+#define MUTEX "/semMUTEX"
+#define S1 "/semS1"
+
+
 
 /*****************************************************************/
 /* Nombre: main()                                                         */
@@ -44,7 +45,35 @@
 
 void cerrar_programa(int sig)
 {
-    esta_proceso_terminado = TRUE;
+    int i;
+    // Guardar fichero
+    GuardarFichero(raizarbol);
+
+    // Borrar colas
+    msgctl(Q1, IPC_RMID, 0);
+    msgctl(Q2, IPC_RMID, 0);
+
+
+
+    // Cerrar clientes
+    for(i=0; i<num_clientes; i++)
+    {
+        kill(vector_clientes[i],SIGINT);
+    }
+
+    // Liberar memoria
+    free(vector_clientes);
+
+
+    // Cerrar y borrar semaforos
+    sem_close(mutex);
+    sem_close(s1);
+    sem_unlink(MUTEX);
+    sem_unlink(S1);
+
+    // Destruye la memoria compartida
+    shmctl(memo, IPC_RMID, 0);
+    exit(0);
 }
 
 

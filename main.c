@@ -24,8 +24,8 @@
 
 
 #define PERMS 0600
-#define MUTEX "/raro123"
-#define S1 "/ouyea123"
+#define MUTEX "/semMUTEX"
+#define S1 "/semS1"
 /*****************************************************************/
 /* Nombre: main()                                                         */
 /* Descripción: Carga el menú principal.                                  */
@@ -37,16 +37,16 @@
 
 int main(int argc, char *argv[])
 {
-    int Q1,Q2,memo,max_clientes,*dato,i; // dato para insertar/buscar/borrar , err para buscar errores,Q1 cola 1,Q2 cola 2,max_clientes,longitud mensaje
+    int *dato,i; // dato para insertar/buscar/borrar , err para buscar errores,Q1 cola 1,Q2 cola 2,max_clientes,longitud mensaje
     key_t llave1, llave2,keymemo; // llaves para la creacion de colas y memoria compartida
-    sem_t *s1, *mutex; // punteros para identificador de los semaforos
+
 
     struct mensaje_peticion peticion;
     struct mensaje_respuesta respuesta;
 
-    Nodo *raizarbol=NULL;// Árbol vacío
-    int *vector_clientes;
-    int num_clientes;
+    raizarbol=NULL;// Árbol vacío
+
+
 
     num_clientes=0; // Inicializamos el numero de clientes
     esta_proceso_terminado= FALSE;
@@ -69,25 +69,25 @@ int main(int argc, char *argv[])
     llave1=ftok("/bin",'3');
     if(llave1==-1)
     {
-        printf("¡Error! ftok fallo con errno = %d\n",errno);
+        perror(strerror(errno));
         exit(-1);
     }
     llave2=ftok("/bin",'4');
     if(llave2==-1)
     {
-        printf("¡Error! ftok fallo con errno = %d\n",errno);
+        perror(strerror(errno));
         exit(-1);
     }
     Q1 = msgget(llave1, PERMS | IPC_CREAT);
     if(Q1==-1)
     {
-        printf("¡Error! Al crear colas fallo con errno = %d\n",errno);
+        perror(strerror(errno));
         exit(-1);
     }
     Q2 = msgget(llave2, PERMS | IPC_CREAT);
     if(Q2==-1)
     {
-        printf("¡Error! Al crear colas fallo con errno = %d\n",errno);
+        perror(strerror(errno));
         exit(-1);
     }
 
@@ -97,22 +97,22 @@ int main(int argc, char *argv[])
     keymemo=ftok("/bin",'5');
     if(keymemo==-1)
     {
-        printf("¡Error! ftok fallo con errno = %d\n",errno);
+        perror(strerror(errno));
         exit(-1);
     }
     memo=shmget(keymemo,sizeof(int),IPC_CREAT | PERMS);
     if(memo==-1)
     {
-        printf("¡Error! No se pudo acceder a la memoria compartida, fallo con errno = %d\n",errno);
+        perror(strerror(errno));
         exit(-1);
     }
 
 
     // Creo e inicializo semaforo mutex a 1
-    mutex=sem_open(MUTEX, O_CREAT, PERMS, 0);
+    mutex=sem_open(MUTEX, O_CREAT, PERMS, 1);
     if(mutex==SEM_FAILED)
     {
-        printf("¡Error! No se pudo abrir el semaforo, fallo con errno = %d\n",errno);
+        perror(strerror(errno));
         exit(-1);
     }
 
@@ -120,13 +120,13 @@ int main(int argc, char *argv[])
     s1=sem_open(S1,O_CREAT,PERMS,max_clientes);
     if(s1==SEM_FAILED)
     {
-        printf("¡Error! No se pudo abrir el semaforo, fallo con errno = %d\n",errno);
+        perror(strerror(errno));
         exit(-1);
     }
 
 
     //Vector con los pids de los clientes
-    vector_clientes=malloc(max_clientes*sizeof(pid_t));
+    vector_clientes=(int *)malloc(max_clientes*sizeof(pid_t));
 
 
 
@@ -146,7 +146,7 @@ int main(int argc, char *argv[])
     dato=shmat(memo,0,0);
 
 
-    while(!esta_proceso_terminado)
+    while(1)
     {
         msgrcv(Q1,&peticion,sizeof(int),0,0);
         respuesta.tipo=peticion.tipo;
@@ -169,7 +169,7 @@ int main(int argc, char *argv[])
         case 2:
             sem_wait(mutex);
             raizarbol=Borrar(raizarbol,*dato);
-            sem_post(mutex);
+//            sem_post(mutex);
             break;
             // BUSCAR
         case 3:
@@ -182,7 +182,7 @@ int main(int argc, char *argv[])
             {
                 // Dato no encontrado
             }
-            sem_post(mutex);
+//            sem_post(mutex);
             break;
             // TERMINAR
         case 4:

@@ -3,7 +3,6 @@
 	<FileVersion major="1" minor="6" />
 	<Project>
 		<Option title="Servidor-Cliente" />
-		<Option makefile_is_custom="1" />
 		<Option execution_dir="/Datos/Alex/Clase/5 curso/Computadores/Practicas/Practica 1/Programa/copia seguridad/" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
@@ -34,6 +33,9 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Linker>
+			<Add library="pthread" />
+		</Linker>
 		<Unit filename="Makefile">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
@@ -80,6 +82,7 @@
 		<Extensions>
 			<code_completion />
 			<debugger />
+			<envvars />
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>

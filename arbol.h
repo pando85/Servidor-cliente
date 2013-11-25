@@ -10,32 +10,39 @@
 #define TRUE 1
 
 
-/*************************************VARIABLES GLOBALES************************************/
+/*************************************VARIABLES GLOBALES Y ESTRUCTURAS ************************************/
 int esta_proceso_terminado;
+int Q1,Q2,memo,max_clientes;
+
+int *vector_clientes;
+int num_clientes;
+
+sem_t *s1, *mutex; // punteros para identificador de los semaforos
+
 
 typedef struct NodoArbol
 {
     int dato;
     struct NodoArbol *der;
     struct NodoArbol *izq;
-} Nodo;
+} Nodo ;
 
 struct mensaje_peticion
 {
-	long tipo;
-	int codigo_operacion;
+    long tipo;
+    int codigo_operacion;
 };
 
 struct mensaje_respuesta
 {
-	long tipo;
-	int codigo_error;
+    long tipo;
+    int codigo_error;
 };
 
 
 
 
-
+Nodo *raizarbol;
 
 
 
