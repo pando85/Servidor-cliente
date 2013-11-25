@@ -1,13 +1,20 @@
+/*****************************************************************/
+/* Nombre: cliente.c                                                      */
+/* Contiene el cliente del programa con el menú:                          */
+/* main()                                                                 */
+/*                                                                        */
+/*****************************************************************/
 
 #ifndef CABECERA_INCLUIDA
 #define CABECERA_INCLUIDA
 #include "../arbol.h"
 #endif
 
+
 /*****************************************************************/
 /* Nombre: main()                                                         */
 /* Descripción: Carga el menú principal.                                  */
-/* Argumentos: 	Nº máximo de clientes.                                    */
+/* Argumentos:                                                            */
 /* Valor Devuelto: 0 si se ha ejecutado con éxito el programa.            */
 /* Alexander Gil Casas. 2013.                                             */
 /*****************************************************************/
@@ -25,6 +32,7 @@ int main()
     struct mensaje_respuesta respuesta;
 
     // ABRIENDO LAS COLAS
+    printf("Abriendo colas...\n");
     llave1=ftok("/bin",'3');
     if(llave1==-1)
     {
@@ -40,17 +48,18 @@ int main()
     Q1= msgget(llave1, 0);
     if(Q1==-1)
     {
-        printf("¡Error! No esta ejecutado el servidor Q1.\n");
+        printf("¡Error! No esta ejecutado el servidor.\n");
         exit(-1);
     }
     Q2= msgget(llave2, 0);
     if(Q2==-1)
     {
-        printf("¡Error! No esta ejecutado el servidor Q2.\n");
+        printf("¡Error! No esta ejecutado el servidor.\n");
         exit(-1);
     }
 
     // ABRIENDO LA MEMORIA COMPARTIDA
+    printf("Abriendo memoria compartida...\n");
     keymemo=ftok("/bin",'5');
     if(keymemo==-1)
     {
@@ -65,6 +74,7 @@ int main()
     }
 
     // ABRIENDO LOS SEMAFOROS
+    printf("Abriendo semaforos...\n");
     s1=sem_open(S1,  0);
 
     if(s1==SEM_FAILED)
@@ -80,7 +90,7 @@ int main()
         exit(-1);
     }
 
-    // Bloqueo si n_clientes>nmax_clientes
+    // Bloqueo si num_clientes>nmax_clientes
     printf("Esperando hueco en el servidor...\n");
     sem_wait(s1);
 
@@ -93,9 +103,10 @@ int main()
     msgsnd(Q1, &peticion,sizeof(int),0);
     msgrcv(Q2,&respuesta,sizeof(int),getpid(),0);
 
-    /************************MENÚ*********************************/
+
     while(1)//peticion.codigo_operacion!=4
     {
+    /************************MENÚ*********************************/
         printf("\n\n\n\n");
         printf("1. Insertar elemento por valor\n");
         printf("2. Borrar elemento en árbol\n");
