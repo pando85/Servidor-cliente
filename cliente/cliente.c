@@ -23,9 +23,9 @@
 int main()
 {
     int *dato_enviado,dato,err; // dato_enviado para insertar/buscar/borrar , err para buscar errores
-    int Q1,Q2,memo; // Identificadores colas y mem compartida
+    int Q1,Q2,Q_clientes_activos,memo; // Identificadores colas y mem compartida
 
-    key_t llave1, llave2,keymemo; // llaves para la creacion de colas y memoria compartida
+    key_t llave1, llave2,llave3,keymemo; // llaves para la creacion de colas y memoria compartida
     sem_t *s1, *mutex; // punteros para identificador de los semaforos
 
     struct mensaje_peticion peticion;
@@ -45,6 +45,12 @@ int main()
         printf("¡Error! ftok fallo con errno = %d\n",errno);
         exit(-1);
     }
+    llave3=ftok("/bin",'7');
+    if(llave2==-1)
+    {
+        printf("¡Error! ftok fallo con errno = %d\n",errno);
+        exit(-1);
+    }
     Q1= msgget(llave1, 0);
     if(Q1==-1)
     {
@@ -53,6 +59,12 @@ int main()
     }
     Q2= msgget(llave2, 0);
     if(Q2==-1)
+    {
+        printf("¡Error! No esta ejecutado el servidor.\n");
+        exit(-1);
+    }
+    Q_clientes_activos= msgget(llave3, 0);
+    if(Q_clientes_activos==-1)
     {
         printf("¡Error! No esta ejecutado el servidor.\n");
         exit(-1);

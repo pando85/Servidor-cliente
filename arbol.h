@@ -14,6 +14,7 @@
 #define PERMS 0600
 #define MUTEX "/semMUTEX"
 #define S1 "/semS1"
+#define TIEMPO_RESPUESTA 15
 
 /******************************************ERRORES*******************************************************/
 #define NO_ERROR 0
@@ -31,6 +32,7 @@
 #include <semaphore.h>
 #include <fcntl.h>
 #include <signal.h>
+#include <unistd.h>
 
 
 

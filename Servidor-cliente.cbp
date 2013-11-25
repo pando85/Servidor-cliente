@@ -56,10 +56,6 @@
 			<Option compilerVar="CC" />
 			<Option target="servidor" />
 		</Unit>
-		<Unit filename="cerrar.c">
-			<Option compilerVar="CC" />
-			<Option target="servidor" />
-		</Unit>
 		<Unit filename="cliente/cliente.c">
 			<Option compilerVar="CC" />
 			<Option target="cliente" />
