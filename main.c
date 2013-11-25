@@ -54,15 +54,9 @@ void cerrar_programa(int sig);
 
 int main(int argc, char *argv[])
 {
-    int i;
-
 
     struct mensaje_peticion peticion;
     struct mensaje_respuesta respuesta;
-
-    raizarbol=NULL;
-
-    num_clientes=0;
 
     // Comprobación si se ha introducido el número máximo de clientes
     if(argc!=2)
