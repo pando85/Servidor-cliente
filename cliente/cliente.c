@@ -22,7 +22,7 @@
 
 int main()
 {
-    int *dato,d,err; // dato para insertar/buscar/borrar , err para buscar errores
+    int *dato_enviado,dato,err; // dato_enviado para insertar/buscar/borrar , err para buscar errores
     int Q1,Q2,memo; // Identificadores colas y mem compartida
 
     key_t llave1, llave2,keymemo; // llaves para la creacion de colas y memoria compartida
@@ -94,7 +94,7 @@ int main()
     printf("Esperando hueco en el servidor...\n");
     sem_wait(s1);
 
-    dato=shmat(memo,0,0);
+    dato_enviado=shmat(memo,0,0);
 
     // Petición de alta
     printf("Petición de alta en el servidor...\n");
@@ -122,7 +122,7 @@ int main()
 
             printf("\nIntroduzca el dato:");
             __fpurge(stdin);
-            err=scanf("%d",&d);
+            err=scanf("%d",&dato);
         }
         if(err==0)
         {
@@ -132,7 +132,7 @@ int main()
         {
             sem_wait(mutex);
             msgsnd(Q1, &peticion,sizeof(int),0);
-            *dato=d;
+            *dato_enviado=dato;
             sem_post(mutex);
             msgrcv(Q2,&respuesta,sizeof(int),getpid(),0);
 
