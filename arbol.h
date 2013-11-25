@@ -14,6 +14,7 @@
 #define PERMS 0600
 #define MUTEX "/semMUTEX"
 #define S1 "/semS1"
+#define SCLIENTES "/semSCLIENTES"
 #define TIEMPO_RESPUESTA 15
 
 /******************************************ERRORES*******************************************************/
@@ -33,7 +34,7 @@
 #include <fcntl.h>
 #include <signal.h>
 #include <unistd.h>
-
+#include <pthread.h>
 
 
 
@@ -78,6 +79,6 @@ void GuardarFichero(Nodo* raiz);
 int Contar(Nodo* raiz);
 Nodo* CargarOrdenado(Nodo* raiz);
 Nodo* InsertarOrdenado(int inicio,int final,int *datos,Nodo* raiz);
-int baja(int pid,int *vector_clientes,int max_clientes);
+
 
 

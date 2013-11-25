@@ -2,10 +2,10 @@
 <CodeBlocks_layout_file>
 	<ActiveTarget name="servidor" />
 	<File name="arbol.h" open="1" top="0" tabpos="2">
-		<Cursor position="1479" topLine="0" />
+		<Cursor position="1525" topLine="30" />
 	</File>
 	<File name="baja.c" open="1" top="0" tabpos="4">
-		<Cursor position="654" topLine="0" />
+		<Cursor position="654" topLine="22" />
 	</File>
 	<File name="borrar.c" open="1" top="0" tabpos="6">
 		<Cursor position="835" topLine="12" />
@@ -16,8 +16,8 @@
 	<File name="cargar.c" open="1" top="0" tabpos="8">
 		<Cursor position="569" topLine="0" />
 	</File>
-	<File name="cliente/cliente.c" open="1" top="1" tabpos="10">
-		<Cursor position="4119" topLine="114" />
+	<File name="cliente/cliente.c" open="1" top="0" tabpos="10">
+		<Cursor position="4479" topLine="81" />
 	</File>
 	<File name="guardar.c" open="1" top="0" tabpos="9">
 		<Cursor position="445" topLine="0" />
@@ -25,8 +25,8 @@
 	<File name="insertar.c" open="1" top="0" tabpos="5">
 		<Cursor position="446" topLine="0" />
 	</File>
-	<File name="main.c" open="1" top="0" tabpos="1">
-		<Cursor position="4496" topLine="150" />
+	<File name="main.c" open="1" top="1" tabpos="1">
+		<Cursor position="10501" topLine="402" />
 	</File>
 	<File name="visualizar.c" open="1" top="0" tabpos="3">
 		<Cursor position="446" topLine="0" />

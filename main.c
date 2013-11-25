@@ -24,10 +24,11 @@ Nodo *raizarbol = NULL;
 int *vector_clientes = NULL;
 int num_clientes = 0;
 
-int pid_clientes_activos;
+pthread_t hilo_c_clientes;
 int Q_clientes_activos = -1;
-int *matar_pid;
-
+int matar_pid = NULL;
+struct mensaje_peticion cliente_activo;
+sem_t *sclientes = NULL;
 
 // Cabeceras de funciones
 int preparar_entorno();
@@ -46,7 +47,9 @@ void cerrar_clientes(int *clientes, int numero_clientes);
 void cerrar_semaforo(sem_t *semaforo, char nombre[]);
 void liberar_memoria_compartida(int memoria_compartida);
 void cerrar_programa(int sig);
-void control_clientes();
+void *control_clientes(void *parametro);
+void matar_cliente_inactivo(int sig);
+int baja(int pid,int *vector_clientes,int max_clientes);
 
 /*****************************************************************/
 /* Nombre: main()                                                         */
@@ -59,10 +62,11 @@ void control_clientes();
 
 int main(int argc, char *argv[])
 {
+    int error;
 
     struct mensaje_peticion peticion;
     struct mensaje_respuesta respuesta;
-    struct mensaje_peticion cliente_activo;
+
     // Comprobación si se ha introducido el número máximo de clientes
     if(argc!=2)
     {
@@ -79,95 +83,93 @@ int main(int argc, char *argv[])
     if (!preparar_entorno())
         cerrar_programa(2);
 
-    printf("Abriendo el control de clientes inactivos...\n");
-    pid_clientes_activos=fork();
-    if(pid_clientes_activos==0)
-    {
-        control_clientes();
 
+    error = pthread_create(&hilo_c_clientes, NULL,control_clientes, NULL);
+
+    if(error != 0)
+    {
+        perror("\n¡ERROR!No se puede crear el hilo para el control de clientes inactivos.\n\n");
     }
-    else
+    while(1)
     {
-
-
-        while(1)
+        msgrcv(Q1,&peticion,sizeof(int),0,0);
+        respuesta.tipo=peticion.tipo;
+        switch(peticion.codigo_operacion)
         {
-            msgrcv(Q1,&peticion,sizeof(int),0,0);
-            respuesta.tipo=peticion.tipo;
-            switch(peticion.codigo_operacion)
+            // ALTA
+        case 0:
+            printf("Peticion de alta del cliente %d/%d, con pid %ld\n",num_clientes+1,max_clientes,peticion.tipo);
+            vector_clientes[num_clientes]=peticion.tipo;
+            num_clientes++;
+            respuesta.codigo_error=NO_ERROR;
+            break;
+
+
+            // INSERTAR
+        case 1:
+            sem_wait(mutex);
+            raizarbol=InsertarElemento(raizarbol,*dato);
+            respuesta.codigo_error=NO_ERROR;
+            sem_post(mutex);
+            break;
+
+
+            // BORRAR
+        case 2:
+            sem_wait(mutex);
+            raizarbol=Borrar(raizarbol,*dato);
+            respuesta.codigo_error=NO_ERROR;
+            sem_post(mutex);
+            break;
+
+
+            // BUSCAR
+        case 3:
+            sem_wait(mutex);
+            if(Buscar(raizarbol,*dato)!=NULL)
             {
-                // ALTA
-            case 0:
-                printf("Peticion de alta del cliente %d/%d, con pid %ld\n",num_clientes+1,max_clientes,peticion.tipo);
-                vector_clientes[num_clientes]=peticion.tipo;
-                num_clientes++;
-                respuesta.codigo_error=NO_ERROR;
-                break;
-
-
-                // INSERTAR
-            case 1:
-                sem_wait(mutex);
-                raizarbol=InsertarElemento(raizarbol,*dato);
-                respuesta.codigo_error=NO_ERROR;
-                sem_post(mutex);
-                break;
-
-
-                // BORRAR
-            case 2:
-                sem_wait(mutex);
-                raizarbol=Borrar(raizarbol,*dato);
-                respuesta.codigo_error=NO_ERROR;
-                sem_post(mutex);
-                break;
-
-
-                // BUSCAR
-            case 3:
-                sem_wait(mutex);
-                if(Buscar(raizarbol,*dato)!=NULL)
-                {
-                    respuesta.codigo_error=ENCONTRADO;
-                }
-                else
-                {
-                    respuesta.codigo_error=NO_ENCONTRADO;
-                }
-                sem_post(mutex);
-                break;
-
-
-                // TERMINAR
-            case 4:
-                if(baja(peticion.tipo,vector_clientes,max_clientes)==ELIMINADO)
-                {
-                    num_clientes--;
-                    printf("Peticion de baja del cliente %ld, clientes conectados %d/%d\n",peticion.tipo,num_clientes,max_clientes);
-                    respuesta.codigo_error=NO_ERROR;
-                    sem_post(s1);
-                }
-                else
-                {
-                    respuesta.codigo_error=ERROR_NO_BAJA;
-                }
-                break;
-
-
-
+                respuesta.codigo_error=ENCONTRADO;
             }
+            else
+            {
+                respuesta.codigo_error=NO_ENCONTRADO;
+            }
+            sem_post(mutex);
+            break;
 
-            msgsnd(Q2, &respuesta, sizeof(int),0);
 
-            printf("\n\n");
-            Visualizar(raizarbol);
-            printf("\n\n");
+            // TERMINAR
+        case 4:
+            if(baja(peticion.tipo,vector_clientes,max_clientes)==ELIMINADO)
+            {
+                sem_wait(sclientes);
+                num_clientes--;
+                sem_post(sclientes);
+                printf("Peticion de baja del cliente %ld, clientes conectados %d/%d\n",peticion.tipo,num_clientes,max_clientes);
+                respuesta.codigo_error=NO_ERROR;
+                sem_post(s1);
+            }
+            else
+            {
+                respuesta.codigo_error=ERROR_NO_BAJA;
+            }
+            break;
+
 
 
         }
 
-        return 0;
+        msgsnd(Q2, &respuesta, sizeof(int),0);
+
+        printf("\n\n");
+        Visualizar(raizarbol);
+        printf("\n\n");
+
+
     }
+
+    return 0;
+
 }
 
 
@@ -218,7 +220,13 @@ int preparar_entorno()
         printf("\nError inicializando semaforo S1.\n\n");
         return FALSE;
     }
-
+    // Semaforo para el control de clientes
+    sclientes = inicializar_semaforo(SCLIENTES, 1);
+    if(!es_semaforo_correcto(sclientes))
+    {
+        printf("\nError inicializando semaforo SCLIENTES.\n\n");
+        return FALSE;
+    }
 
     //Vector con los pids de los clientes
     vector_clientes = inicializar_clientes(max_clientes);
@@ -289,6 +297,7 @@ int inicializar_memoria_compartida(char nombre[], char id)
         printf("¡Error! No se pudo acceder a la memoria compartida, [ERROR %d]\n", errno);
         return -1;
     }
+    return memoria;
 }
 
 int es_memoria_correcta(int memoria_compartida)
@@ -377,7 +386,7 @@ void liberar_memoria_compartida(int memoria_compartida)
 void cerrar_programa(int sig)
 {
     printf("Cerrando el control de clientes inactivos...\n");
-    kill(pid_clientes_activos,SIGKILL);
+
 
     printf("Guardando datos del arbol en el fichero...\n");
     GuardarFichero(raizarbol);
@@ -393,46 +402,81 @@ void cerrar_programa(int sig)
     printf("Cerrando semaforos...\n");
     cerrar_semaforo(mutex, MUTEX);
     cerrar_semaforo(s1, S1);
+    cerrar_semaforo(sclientes,SCLIENTES);
 
     printf("Cerrando memoria compartida...\n");
     liberar_memoria_compartida(memo);
     exit(0);
 }
 
-void control_clientes()
+void *control_clientes(void *parametro)
 {
     int i;
-
+    printf("Iniciando el control de clientes activos...\n");
     signal (SIGALRM,matar_cliente_inactivo);
     while(1)
     {
-        for(i=0; i<max_clientes; i++)
+        for(i=0; i<num_clientes; i++)
         {
             if(vector_clientes[i]!=0)
             {
-                kill(vector_clientes[i],SIGUSR1);
                 matar_pid = vector_clientes[i];
+                kill(vector_clientes[i],SIGUSR1);
                 alarm(TIEMPO_RESPUESTA);
+                printf("Comprobando actividad del cliente %d\n",matar_pid);
                 msgrcv(Q_clientes_activos,&cliente_activo,sizeof(int),vector_clientes[i],0);
                 alarm(0);
 
-
             }
+        }
+    }
+}
 
+void matar_cliente_inactivo(int sig)
+{
 
+    if(baja(matar_pid,vector_clientes,max_clientes)==ELIMINADO)
+    {
+        sem_wait(sclientes);
+        num_clientes--;
+        sem_post(sclientes);
+        printf("Eliminado el cliente %d por inactividad, clientes conectados %d/%d\n",matar_pid,num_clientes,max_clientes);
+        sem_post(s1);
+    }
+
+}
+
+int baja(int pid,int *vector_clientes,int max_clientes)
+{
+    int i,encontrado=0;
+
+    sem_wait(sclientes);
+    // Busco el cliente a eliminar
+    for(i=0; i<max_clientes; i++)
+    {
+        if(vector_clientes[i]==pid)
+        {
+            encontrado=1;
+            break;
         }
     }
 
-
-}
-void matar_cliente_inactivo(int sig)
-{
-    if(baja(matar_pid,vector_clientes,max_clientes)==ELIMINADO)
+    if(encontrado!=1)
     {
-        num_clientes--;
-        printf("Eliminado el cliente %ld por inactividad, clientes conectados %d/%d\n",matar_pid,num_clientes,max_clientes);
-        sem_post(s1);
+        sem_post(sclientes);
+        return 0;
     }
+    // Lo elimino y reordeno el vector_clientes para dejar el hueco libre al final
+
+    for(i=i; i<max_clientes-1; i++)
+    {
+        vector_clientes[i]=vector_clientes[i+1];
+    }
+
+    sem_post(sclientes);
+    // si todo ha salido bien devuelvo 1 y mando señal de terminación al proceso
+    kill(pid,SIGINT);
+    return ELIMINADO;
 
 }
 
