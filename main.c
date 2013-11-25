@@ -5,27 +5,17 @@
 /*                                                                        */
 /*****************************************************************/
 
-#include <stdio.h>
-#include <stdlib.h>
+
 
 #ifndef CABECERA_INCLUIDA
 #define CABECERA_INCLUIDA
 #include "arbol.h"
 #endif
 
-#include <sys/ipc.h>
-#include <sys/msg.h>
-#include <sys/shm.h>
-#include <sys/errno.h>
-#include <errno.h>
-#include <semaphore.h>
-#include <fcntl.h>
-#include <signal.h>
 
 
-#define PERMS 0600
-#define MUTEX "/semMUTEX"
-#define S1 "/semS1"
+
+
 /*****************************************************************/
 /* Nombre: main()                                                         */
 /* Descripción: Carga el menú principal.                                  */
@@ -40,13 +30,10 @@ int main(int argc, char *argv[])
     int *dato,i; // dato para insertar/buscar/borrar , err para buscar errores,Q1 cola 1,Q2 cola 2,max_clientes,longitud mensaje
     key_t llave1, llave2,keymemo; // llaves para la creacion de colas y memoria compartida
 
-
     struct mensaje_peticion peticion;
     struct mensaje_respuesta respuesta;
 
     raizarbol=NULL;// Árbol vacío
-
-
 
     num_clientes=0; // Inicializamos el numero de clientes
     esta_proceso_terminado= FALSE;
@@ -62,7 +49,6 @@ int main(int argc, char *argv[])
         printf("\n¡Error! Debe introducir el nº maximo de clientes como argumento.\n\n");
         exit(-1);
     }
-
 
     printf("Creando colas...\n");
 
@@ -91,7 +77,6 @@ int main(int argc, char *argv[])
         perror(strerror(errno));
         exit(-1);
     }
-
 
     printf("Creando memoria compartida...\n");
     // Creo memoria compartida
@@ -126,10 +111,8 @@ int main(int argc, char *argv[])
         exit(-1);
     }
 
-
     //Vector con los pids de los clientes
     vector_clientes=(int *)malloc(max_clientes*sizeof(pid_t));
-
 
     printf("Cargando datos del arbol desde el fichero...\n");
     // Cargar fichero
@@ -146,7 +129,6 @@ int main(int argc, char *argv[])
 
     // Dato apunta a la memoria compartida
     dato=shmat(memo,0,0);
-
 
     while(1)
     {

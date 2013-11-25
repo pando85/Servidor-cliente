@@ -5,19 +5,32 @@
 /*                                                                               */
 /*                                                                               */
 /***********************************************************************/
-#include <semaphore.h>
+
 #define FALSE 0
 #define TRUE 1
 
 #define ELIMINADO 1
 
+#define PERMS 0600
+#define MUTEX "/semMUTEX"
+#define S1 "/semS1"
 
 /******************************************ERRORES*******************************************************/
 #define NO_ERROR 0
 #define ERROR_NO_BAJA 1
 #define ENCONTRADO 2
 #define NO_ENCONTRADO 3
-
+/*********************************************************************************************************/
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/ipc.h>
+#include <sys/msg.h>
+#include <sys/shm.h>
+#include <sys/errno.h>
+#include <errno.h>
+#include <semaphore.h>
+#include <fcntl.h>
+#include <signal.h>
 
 
 /*************************************VARIABLES GLOBALES Y ESTRUCTURAS ************************************/

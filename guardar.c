@@ -5,10 +5,6 @@
 /* Guardar()                                                              */
 /*****************************************************************/
 
-
-#include <stdio.h>
-#include <stdlib.h>
-
 #ifndef CABECERA_INCLUIDA
     #define CABECERA_INCLUIDA
     #include "arbol.h"

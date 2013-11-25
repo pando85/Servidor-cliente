@@ -1,18 +1,9 @@
-#include <stdio.h>
-#include <stdlib.h>
+
+#ifndef CABECERA_INCLUIDA
+#define CABECERA_INCLUIDA
 #include "../arbol.h"
-#include <sys/ipc.h>
-#include <sys/msg.h>
-#include <sys/shm.h>
-#include <sys/errno.h>
-#include <errno.h>
-#include <semaphore.h>
-#include <fcntl.h>
+#endif
 
-
-#define PERMS 0600
-#define MUTEX "/semMUTEX"
-#define S1 "/semS1"
 /*****************************************************************/
 /* Nombre: main()                                                         */
 /* Descripción: Carga el menú principal.                                  */
@@ -30,12 +21,8 @@ int main()
     key_t llave1, llave2,keymemo; // llaves para la creacion de colas y memoria compartida
     sem_t *s1, *mutex; // punteros para identificador de los semaforos
 
-
-
     struct mensaje_peticion peticion;
     struct mensaje_respuesta respuesta;
-
-
 
     // ABRIENDO LAS COLAS
     llave1=ftok("/bin",'3');
@@ -76,6 +63,7 @@ int main()
         printf("¡Error! No se pudo acceder a la memoria compartida, fallo con errno = %d\n",errno);
         exit(-1);
     }
+
     // ABRIENDO LOS SEMAFOROS
     s1=sem_open(S1,  0);
 
@@ -92,14 +80,11 @@ int main()
         exit(-1);
     }
 
-
     // Bloqueo si n_clientes>nmax_clientes
     printf("Esperando hueco en el servidor...\n");
     sem_wait(s1);
 
-
     dato=shmat(memo,0,0);
-
 
     // Petición de alta
     printf("Petición de alta en el servidor...\n");
@@ -107,8 +92,6 @@ int main()
     peticion.codigo_operacion=0;
     msgsnd(Q1, &peticion,sizeof(int),0);
     msgrcv(Q2,&respuesta,sizeof(int),getpid(),0);
-
-
 
     /************************MENÚ*********************************/
     while(1)//peticion.codigo_operacion!=4
@@ -159,10 +142,8 @@ int main()
 
             case ERROR_NO_BAJA:
                 printf("¡ERROR! No se pudo efectuar la baja.\n");
+                sleep(1);
                 break;
-
-
-
 
             }
 
