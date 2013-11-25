@@ -15,7 +15,8 @@
 #define MUTEX "/semMUTEX"
 #define S1 "/semS1"
 #define SCLIENTES "/semSCLIENTES"
-#define TIEMPO_RESPUESTA 15
+#define TIEMPO_RESPUESTA 5
+#define TIEMPO_ESPERA 20
 
 /******************************************ERRORES*******************************************************/
 #define NO_ERROR 0

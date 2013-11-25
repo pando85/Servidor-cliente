@@ -26,9 +26,10 @@ int num_clientes = 0;
 
 pthread_t hilo_c_clientes;
 int Q_clientes_activos = -1;
-int matar_pid = NULL;
+int matar_pid ;
 struct mensaje_peticion cliente_activo;
 sem_t *sclientes = NULL;
+sigset_t senyal_bloqueada;
 
 // Cabeceras de funciones
 int preparar_entorno();
@@ -64,6 +65,7 @@ int main(int argc, char *argv[])
 {
     int error;
 
+
     struct mensaje_peticion peticion;
     struct mensaje_respuesta respuesta;
 
@@ -90,6 +92,15 @@ int main(int argc, char *argv[])
     {
         perror("\n¡ERROR!No se puede crear el hilo para el control de clientes inactivos.\n\n");
     }
+
+    sigemptyset(&senyal_bloqueada);
+    sigaddset(&senyal_bloqueada,SIGALRM);
+    error = pthread_sigmask(SIG_BLOCK, &senyal_bloqueada, NULL);
+    if(error != 0)
+    {
+        perror("\n¡ERROR!No se puede crear el hilo para el control de clientes inactivos.\n\n");
+    }
+
     while(1)
     {
         msgrcv(Q1,&peticion,sizeof(int),0,0);
@@ -100,7 +111,9 @@ int main(int argc, char *argv[])
         case 0:
             printf("Peticion de alta del cliente %d/%d, con pid %ld\n",num_clientes+1,max_clientes,peticion.tipo);
             vector_clientes[num_clientes]=peticion.tipo;
+            sem_wait(sclientes);
             num_clientes++;
+            sem_post(sclientes);
             respuesta.codigo_error=NO_ERROR;
             break;
 
@@ -426,7 +439,7 @@ void *control_clientes(void *parametro)
                 printf("Comprobando actividad del cliente %d\n",matar_pid);
                 msgrcv(Q_clientes_activos,&cliente_activo,sizeof(int),vector_clientes[i],0);
                 alarm(0);
-
+                sleep(TIEMPO_ESPERA);
             }
         }
     }
