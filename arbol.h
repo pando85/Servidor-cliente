@@ -33,14 +33,6 @@
 #include <signal.h>
 
 
-/*************************************VARIABLES GLOBALES Y ESTRUCTURAS ************************************/
-int esta_proceso_terminado;
-int Q1,Q2,memo,max_clientes;
-
-int *vector_clientes;
-int num_clientes;
-
-sem_t *s1, *mutex; // punteros para identificador de los semaforos
 
 
 typedef struct NodoArbol
@@ -65,12 +57,6 @@ struct mensaje_respuesta
 
 
 
-Nodo *raizarbol;
-
-
-
-
-
 
 
 
@@ -90,5 +76,6 @@ void GuardarFichero(Nodo* raiz);
 int Contar(Nodo* raiz);
 Nodo* CargarOrdenado(Nodo* raiz);
 Nodo* InsertarOrdenado(int inicio,int final,int *datos,Nodo* raiz);
-void cerrar_programa(int sig);
 int baja(int pid,int *vector_clientes,int max_clientes);
+
+

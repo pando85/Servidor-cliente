@@ -40,13 +40,13 @@ int main()
     Q1= msgget(llave1, 0);
     if(Q1==-1)
     {
-        printf("¡Error! No esta ejecutado el servidor.\n");
+        printf("¡Error! No esta ejecutado el servidor Q1.\n");
         exit(-1);
     }
     Q2= msgget(llave2, 0);
     if(Q2==-1)
     {
-        printf("¡Error! No esta ejecutado el servidor.\n");
+        printf("¡Error! No esta ejecutado el servidor Q2.\n");
         exit(-1);
     }
 
