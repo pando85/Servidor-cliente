@@ -9,6 +9,16 @@
 #define FALSE 0
 #define TRUE 1
 
+#define ELIMINADO 1
+
+
+/******************************************ERRORES*******************************************************/
+#define NO_ERROR 0
+#define ERROR_NO_BAJA 1
+#define ENCONTRADO 2
+#define NO_ENCONTRADO 3
+
+
 
 /*************************************VARIABLES GLOBALES Y ESTRUCTURAS ************************************/
 int esta_proceso_terminado;

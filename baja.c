@@ -55,7 +55,7 @@ int baja(int pid,int *vector_clientes,int max_clientes)
 
     // si todo ha salido bien devuelvo 1 y mando señal de terminación al proceso
     kill(pid,SIGINT);
-    return 1;
+    return ELIMINADO;
 
 
 

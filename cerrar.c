@@ -46,15 +46,13 @@
 void cerrar_programa(int sig)
 {
     int i;
+    printf("Guardando datos del arbol en el fichero...\n");
     // Guardar fichero
     GuardarFichero(raizarbol);
 
-    // Borrar colas
-    msgctl(Q1, IPC_RMID, 0);
-    msgctl(Q2, IPC_RMID, 0);
 
 
-
+    printf("Cerrando clientes...\n");
     // Cerrar clientes
     for(i=0; i<num_clientes; i++)
     {
@@ -64,13 +62,20 @@ void cerrar_programa(int sig)
     // Liberar memoria
     free(vector_clientes);
 
+    printf("Cerrando colas...\n");
+    // Borrar colas
+    msgctl(Q1, IPC_RMID, 0);
+    msgctl(Q2, IPC_RMID, 0);
 
+
+    printf("Cerrando semaforos...\n");
     // Cerrar y borrar semaforos
     sem_close(mutex);
     sem_close(s1);
     sem_unlink(MUTEX);
     sem_unlink(S1);
 
+    printf("Cerrando memoria compartida...\n");
     // Destruye la memoria compartida
     shmctl(memo, IPC_RMID, 0);
     exit(0);

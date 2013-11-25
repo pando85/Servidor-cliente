@@ -115,18 +115,21 @@ int main()
     {
         printf("\n\n\n\n");
         printf("1. Insertar elemento por valor\n");
-        printf("2. Busca elemento en árbol\n");
-        printf("3. Borrar elemento por valor\n");
+        printf("2. Borrar elemento en árbol\n");
+        printf("3. Buscar elemento por valor\n");
         printf("4. Salir\n");
         printf("\n\n\n");
 
         __fpurge(stdin);
-        scanf("%d",&peticion.codigo_operacion);
+        err=scanf("%d",&peticion.codigo_operacion);
 
+        if(peticion.codigo_operacion==1 || peticion.codigo_operacion==2 || peticion.codigo_operacion==3)
+        {
 
-        printf("\nIntroduzca el dato:");
-        fflush(stdin);
-        err=scanf("%d",&d);
+            printf("\nIntroduzca el dato:");
+            __fpurge(stdin);
+            err=scanf("%d",&d);
+        }
         if(err==0)
         {
             printf("\nNo se ha introducido ningún entero, por favor inténtelo de nuevo.\n");
@@ -138,6 +141,31 @@ int main()
             *dato=d;
             sem_post(mutex);
             msgrcv(Q2,&respuesta,sizeof(int),getpid(),0);
+
+            switch(respuesta.codigo_error)
+            {
+            case NO_ERROR:
+                break;
+
+            case ENCONTRADO:
+                printf("El dato se encuentra en el árbol.\n");
+                sleep(1);
+                break;
+
+            case NO_ENCONTRADO:
+                printf("El dato no se encuentra en el árbol.\n");
+                sleep(1);
+                break;
+
+            case ERROR_NO_BAJA:
+                printf("¡ERROR! No se pudo efectuar la baja.\n");
+                break;
+
+
+
+
+            }
+
         }
 
     }

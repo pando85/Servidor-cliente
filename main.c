@@ -64,6 +64,7 @@ int main(int argc, char *argv[])
     }
 
 
+    printf("Creando colas...\n");
 
     // CREANDO LAS COLAS
     llave1=ftok("/bin",'3');
@@ -92,7 +93,7 @@ int main(int argc, char *argv[])
     }
 
 
-
+    printf("Creando memoria compartida...\n");
     // Creo memoria compartida
     keymemo=ftok("/bin",'5');
     if(keymemo==-1)
@@ -107,6 +108,7 @@ int main(int argc, char *argv[])
         exit(-1);
     }
 
+    printf("Creando semaforos...\n");
 
     // Creo e inicializo semaforo mutex a 1
     mutex=sem_open(MUTEX, O_CREAT, PERMS, 1);
@@ -129,7 +131,7 @@ int main(int argc, char *argv[])
     vector_clientes=(int *)malloc(max_clientes*sizeof(pid_t));
 
 
-
+    printf("Cargando datos del arbol desde el fichero...\n");
     // Cargar fichero
     raizarbol=CargarOrdenado(raizarbol);
 
@@ -154,47 +156,58 @@ int main(int argc, char *argv[])
         {
             // ALTA
         case 0:
+            printf("Peticion de alta del cliente %d/%d, con pid %d\n",num_clientes+1,max_clientes,peticion.tipo);
             vector_clientes[num_clientes]=peticion.tipo;
             num_clientes++;
-            sem_wait(s1);
-            respuesta.codigo_error=0;
+            respuesta.codigo_error=NO_ERROR;
             break;
+
+
             // INSERTAR
         case 1:
             sem_wait(mutex);
             raizarbol=InsertarElemento(raizarbol,*dato);
-//           sem_post(mutex);
+            respuesta.codigo_error=NO_ERROR;
+            sem_post(mutex);
             break;
+
+
             // BORRAR
         case 2:
             sem_wait(mutex);
             raizarbol=Borrar(raizarbol,*dato);
-//            sem_post(mutex);
+            respuesta.codigo_error=NO_ERROR;
+            sem_post(mutex);
             break;
+
+
             // BUSCAR
         case 3:
             sem_wait(mutex);
             if(Buscar(raizarbol,*dato)!=NULL)
             {
-                // Dato encontrado
+                respuesta.codigo_error=ENCONTRADO;
             }
             else
             {
-                // Dato no encontrado
+                respuesta.codigo_error=NO_ENCONTRADO;
             }
-//            sem_post(mutex);
+            sem_post(mutex);
             break;
+
+
             // TERMINAR
         case 4:
-            // si lo elimino deuvelvo 1
-            if(baja(peticion.tipo,vector_clientes,max_clientes)==1)
+            if(baja(peticion.tipo,vector_clientes,max_clientes)==ELIMINADO)
             {
                 num_clientes--;
+                printf("Peticion de baja del cliente %d, clientes conectados %d/%d\n",peticion.tipo,num_clientes,max_clientes);
+                respuesta.codigo_error=NO_ERROR;
                 sem_post(s1);
             }
             else
             {
-                respuesta.codigo_error=1;
+                respuesta.codigo_error=ERROR_NO_BAJA;
             }
             break;
 
