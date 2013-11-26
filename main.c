@@ -31,9 +31,6 @@ sem_t *sclientes = NULL;
 sigset_t senyal_bloqueada;
 
 
-// Cabeceras de funciones
-
-
 /*****************************************************************/
 /* Nombre: main()                                                         */
 /* Descripción: Carga el menú principal.                                  */
@@ -69,7 +66,6 @@ int main(int argc, char *argv[])
 
 
     error = pthread_create(&hilo_c_clientes, NULL,control_clientes, NULL);
-
     if(error != 0)
     {
         perror("\n¡ERROR!No se puede crear el hilo para el control de clientes inactivos.\n\n");
