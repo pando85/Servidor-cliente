@@ -52,18 +52,6 @@ int main()
     // ABRIENDO LA MEMORIA COMPARTIDA
     printf("Abriendo memoria compartida...\n");
     memo = abrir_memoria_compartida(DIR_CLAVE,'5');
-    keymemo=ftok(DIR_CLAVE,'5');
-    if(keymemo==-1)
-    {
-        printf("¡Error! ftok fallo con errno = %d\n",errno);
-        exit(-1);
-    }
-    memo=shmget(keymemo,sizeof(int),PERMS);
-    if(memo==-1)
-    {
-        printf("¡Error! No se pudo acceder a la memoria compartida, fallo con errno = %d\n",errno);
-        exit(-1);
-    }
 
     // ABRIENDO LOS SEMAFOROS
     printf("Abriendo semaforos...\n");
