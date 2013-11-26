@@ -15,6 +15,7 @@
 #define ELIMINADO 1
 
 #define PERMS 0600
+#define DIR_CLAVE "/bin"
 #define MUTEX "/semMUTEX"
 #define S1 "/semS1"
 #define SCLIENTES "/semSCLIENTES"

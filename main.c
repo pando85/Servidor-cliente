@@ -188,20 +188,20 @@ int main(int argc, char *argv[])
 int preparar_entorno()
 {
     printf("Creando colas...\n");
-    Q1 = inicializar_cola("/bin", '3');
+    Q1 = inicializar_cola(DIR_CLAVE, '3');
     if(!es_cola_correcta(Q1))
     {
         printf("\nNo se pudo crear la cola 1.\n\n");
         return FALSE;
     }
 
-    Q2 = inicializar_cola("/bin", '4');
+    Q2 = inicializar_cola(DIR_CLAVE, '4');
     if (!es_cola_correcta(Q2))
     {
         printf("\nNo se pudo crear la cola 2.\n\n");
         return FALSE;
     }
-    Q_clientes_activos = inicializar_cola("/bin", '7');
+    Q_clientes_activos = inicializar_cola(DIR_CLAVE, '7');
     if (!es_cola_correcta(Q_clientes_activos))
     {
         printf("\nNo se pudo crear la cola clientes-activos.\n\n");
@@ -209,7 +209,7 @@ int preparar_entorno()
     }
 
     printf("Creando memoria compartida...\n");
-    memo = inicializar_memoria_compartida("/bin", '5');
+    memo = inicializar_memoria_compartida(DIR_CLAVE, '5');
     if(!es_memoria_correcta(memo))
     {
         printf("\nNo se pudo inicializar la memoria compartida.\n\n");

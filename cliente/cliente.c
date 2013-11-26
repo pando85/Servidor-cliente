@@ -14,6 +14,7 @@ struct mensaje_peticion cliente_activo;
 
 void atender_peticion(int sig);
 int abrir_cola(char nombre[], char id);
+int abrir_memoria_compartida(char nombre[], char id);
 /*****************************************************************/
 /* Nombre: main()                                                         */
 /* Descripción: Carga el menú principal.                                  */
@@ -34,7 +35,6 @@ int main()
     int Q2;
     int memo;
 
-    key_t keymemo; // llaves para la creacion de colas y memoria compartida
 
     sem_t *s1;
     sem_t *mutex;
@@ -44,14 +44,15 @@ int main()
 
     // ABRIENDO LAS COLAS
     printf("Abriendo colas...\n");
-    Q1 = abrir_cola("/bin",'3');
-    Q2 = abrir_cola("/bin",'4');
-    Q_clientes_activos = abrir_cola("/bin",'7');
+    Q1 = abrir_cola(DIR_CLAVE,'3');
+    Q2 = abrir_cola(DIR_CLAVE,'4');
+    Q_clientes_activos = abrir_cola(DIR_CLAVE,'7');
 
 
     // ABRIENDO LA MEMORIA COMPARTIDA
     printf("Abriendo memoria compartida...\n");
-    keymemo=ftok("/bin",'5');
+    memo = abrir_memoria_compartida(DIR_CLAVE,'5');
+    keymemo=ftok(DIR_CLAVE,'5');
     if(keymemo==-1)
     {
         printf("¡Error! ftok fallo con errno = %d\n",errno);
@@ -183,4 +184,24 @@ int abrir_cola(char nombre[], char id)
         exit(-1);
     }
     return cola;
+}
+
+int abrir_memoria_compartida(char nombre[], char id)
+{
+    int memoria;
+
+    key_t keymemo=ftok(nombre,id);
+    if(keymemo < 0)
+    {
+        printf("¡Error! Fallo recuperando token de mem. compartida. [ERROR %d]\n", errno);
+        exit(-1);
+    }
+
+    memoria = shmget(keymemo,sizeof(int),PERMS);
+    if(memoria < 0)
+    {
+        printf("¡Error! No se pudo acceder a la memoria compartida, [ERROR %d]\n", errno);
+        exit(-1);
+    }
+    return memoria;
 }
