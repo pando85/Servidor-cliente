@@ -125,17 +125,17 @@ int main()
 
             case ENCONTRADO:
                 printf("El dato se encuentra en el árbol.\n");
-                sleep(1);
+                sleep(TIEMPO_PANTALLA);
                 break;
 
             case NO_ENCONTRADO:
                 printf("El dato no se encuentra en el árbol.\n");
-                sleep(1);
+                sleep(TIEMPO_PANTALLA);
                 break;
 
             case ERROR_NO_BAJA:
                 printf("¡ERROR! No se pudo efectuar la baja.\n");
-                sleep(1);
+                sleep(TIEMPO_PANTALLA);
                 break;
 
             }

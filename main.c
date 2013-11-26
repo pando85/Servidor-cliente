@@ -32,25 +32,7 @@ sigset_t senyal_bloqueada;
 
 
 // Cabeceras de funciones
-int preparar_entorno();
-int inicializar_cola(char nombre[], char id);
-int inicializar_memoria_compartida(char nombre[], char id);
-sem_t *inicializar_semaforo(char nombre[], int valor_inicial);
-int *inicializar_clientes(int numero_clientes);
-int *get_inicio_memoria_compartida(int memoria_compartida);
-int es_cola_correcta(int cola);
-int es_memoria_correcta(int memoria_compartida);
-int es_semaforo_correcto(sem_t *semaforo);
-int son_clientes_correctos(int *clientes);
-int es_arbol_correcto(Nodo *arbol);
-void borrar_cola(int cola);
-void cerrar_clientes(int *clientes, int numero_clientes);
-void cerrar_semaforo(sem_t *semaforo, char nombre[]);
-void liberar_memoria_compartida(int memoria_compartida);
-void cerrar_programa(int sig);
-void *control_clientes(void *parametro);
-void matar_cliente_inactivo(int sig);
-int baja(int pid,int *vector_clientes,int max_clientes);
+
 
 /*****************************************************************/
 /* Nombre: main()                                                         */
