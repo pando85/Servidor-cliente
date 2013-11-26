@@ -40,10 +40,6 @@
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
 		<Unit filename="arbol.h" />
-		<Unit filename="baja.c">
-			<Option compilerVar="CC" />
-			<Option target="servidor" />
-		</Unit>
 		<Unit filename="borrar.c">
 			<Option compilerVar="CC" />
 			<Option target="servidor" />

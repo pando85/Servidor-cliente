@@ -7,10 +7,9 @@
 
 
 
-#ifndef CABECERA_INCLUIDA
-#define CABECERA_INCLUIDA
+
 #include "arbol.h"
-#endif
+
 
 int Q1 = -1;
 int Q2 = -1;

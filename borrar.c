@@ -5,10 +5,8 @@
 /*                                                                        */
 /*****************************************************************/
 
-#ifndef CABECERA_INCLUIDA
-    #define CABECERA_INCLUIDA
-    #include "arbol.h"
-#endif
+#include "arbol.h"
+
 
 /*****************************************************************/
 /* Nombre: Borrar()                                                       */

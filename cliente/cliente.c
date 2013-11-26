@@ -5,10 +5,8 @@
 /*                                                                        */
 /*****************************************************************/
 
-#ifndef CABECERA_INCLUIDA
-#define CABECERA_INCLUIDA
 #include "../arbol.h"
-#endif
+
 
 
 int Q_clientes_activos;

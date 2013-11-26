@@ -5,6 +5,9 @@
 /*                                                                               */
 /*                                                                               */
 /***********************************************************************/
+#ifndef _ARBOL_H
+#define _ARBOL_H
+
 
 #define FALSE 0
 #define TRUE 1
@@ -82,4 +85,4 @@ Nodo* CargarOrdenado(Nodo* raiz);
 Nodo* InsertarOrdenado(int inicio,int final,int *datos,Nodo* raiz);
 
 
-
+#endif
