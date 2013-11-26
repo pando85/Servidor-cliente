@@ -13,36 +13,39 @@
 #define TRUE 1
 
 #define ELIMINADO 1
-
+/*
+ *  Defines: Control memoria compartida
+ */
 #define PERMS 0600
 #define DIR_CLAVE "/bin"
 #define MUTEX "/semMUTEX"
 #define S1 "/semS1"
 #define SCLIENTES "/semSCLIENTES"
 /*
- *  Control clientes activos
+ *  Defines: Control clientes activos
  */
 #define TIEMPO_RESPUESTA 5
 #define TIEMPO_ESPERA 20
 #define TIEMPO_PANTALLA 2
 
 /*
- *  Errores
+ *  Defines: Errores
  */
 #define NO_ERROR 0
 #define ERROR_NO_BAJA 1
 #define ENCONTRADO 2
 #define NO_ENCONTRADO 3
 /*
- *  Opciones generales
+ *  Defines: Opciones generales
  */
 #define ALTA 0
 #define INSERTAR 1
 #define BORRAR 2
 #define BUSCAR 3
 #define TERMINAR 4
-
-
+/*
+ *  Librerias
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/ipc.h>
@@ -79,14 +82,39 @@ struct mensaje_respuesta
 
 
 
+/*
+ *  Declaraciones comunes
+ */
+int Q1;
+int Q2;
+int memo;
+int max_clientes;
+int *dato;
+sem_t *s1;
+sem_t *mutex;
+struct mensaje_peticion peticion;
+struct mensaje_respuesta respuesta;
+/*
+ *  Declaraciones servidor
+ */
+Nodo *raizarbol;
+int *vector_clientes;
+int num_clientes;
+/*
+ *  Declaraciones control_clientes
+ */
+pthread_t hilo_c_clientes;
+int Q_clientes_activos;
+int matar_pid;
+struct mensaje_peticion cliente_activo;
+sem_t *sclientes;
+sigset_t senyal_bloqueada;
 
 
 
-
-
-
-
-
+/*
+ *  Funciones main.c
+ */
 Nodo* Cargar(Nodo* raiz);
 Nodo* InsertarElemento(Nodo* raiz,int d);
 Nodo* Visualizar(Nodo* raiz);
@@ -98,9 +126,6 @@ void GuardarFichero(Nodo* raiz);
 int Contar(Nodo* raiz);
 Nodo* CargarOrdenado(Nodo* raiz);
 Nodo* InsertarOrdenado(int inicio,int final,int *datos,Nodo* raiz);
-/*
- *  Funciones main.c
- */
 int preparar_entorno();
 int inicializar_cola(char nombre[], char id);
 int inicializar_memoria_compartida(char nombre[], char id);

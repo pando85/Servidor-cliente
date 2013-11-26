@@ -170,7 +170,7 @@ Nodo* Borrar(Nodo* raiz,int d)
     }
     else
     {
-        printf("\nEl dato no se encuentra en el árbol.\n");
+        respuesta.codigo_error=NO_ENCONTRADO;
         return raiz;
     }
 }

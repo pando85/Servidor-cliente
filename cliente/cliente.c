@@ -9,10 +9,6 @@
 
 
 
-int Q_clientes_activos;
-struct mensaje_peticion cliente_activo;
-
-
 /*****************************************************************/
 /* Nombre: main()                                                         */
 /* Descripción: Carga el menú principal.                                  */
@@ -28,17 +24,9 @@ int main()
     int dato;
     int err;
 
-    // Identificadores colas y mem compartida
-    int Q1;
-    int Q2;
-    int memo;
 
 
-    sem_t *s1;
-    sem_t *mutex;
 
-    struct mensaje_peticion peticion;
-    struct mensaje_respuesta respuesta;
 
     // ABRIENDO LAS COLAS
     printf("Abriendo colas...\n");

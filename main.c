@@ -11,26 +11,6 @@
 #include "arbol.h"
 
 
-int Q1 = -1;
-int Q2 = -1;
-int memo = -1;
-int max_clientes;
-int *dato = NULL;
-sem_t *s1 = NULL;
-sem_t *mutex = NULL;
-
-Nodo *raizarbol = NULL;
-int *vector_clientes = NULL;
-int num_clientes = 0;
-
-pthread_t hilo_c_clientes;
-int Q_clientes_activos = -1;
-int matar_pid ;
-struct mensaje_peticion cliente_activo;
-sem_t *sclientes = NULL;
-sigset_t senyal_bloqueada;
-
-
 /*****************************************************************/
 /* Nombre: main()                                                         */
 /* Descripción: Carga el menú principal.                                  */
@@ -45,9 +25,7 @@ int main(int argc, char *argv[])
     int error;
 
 
-    struct mensaje_peticion peticion;
-    struct mensaje_respuesta respuesta;
-
+    num_clientes = 0;
     // Comprobación si se ha introducido el número máximo de clientes
     if(argc!=2)
     {
@@ -104,8 +82,8 @@ int main(int argc, char *argv[])
 
         case BORRAR:
             sem_wait(mutex);
-            raizarbol=Borrar(raizarbol,*dato);
             respuesta.codigo_error=NO_ERROR;
+            raizarbol=Borrar(raizarbol,*dato);
             sem_post(mutex);
             break;
 
