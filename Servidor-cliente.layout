@@ -2,33 +2,30 @@
 <CodeBlocks_layout_file>
 	<ActiveTarget name="servidor" />
 	<File name="arbol.h" open="1" top="0" tabpos="2">
-		<Cursor position="1525" topLine="30" />
+		<Cursor position="2076" topLine="52" />
 	</File>
-	<File name="baja.c" open="1" top="0" tabpos="4">
-		<Cursor position="654" topLine="22" />
+	<File name="borrar.c" open="1" top="0" tabpos="5">
+		<Cursor position="466" topLine="0" />
 	</File>
-	<File name="borrar.c" open="1" top="0" tabpos="6">
-		<Cursor position="835" topLine="12" />
+	<File name="buscar.c" open="1" top="0" tabpos="6">
+		<Cursor position="464" topLine="0" />
 	</File>
-	<File name="buscar.c" open="1" top="0" tabpos="7">
-		<Cursor position="445" topLine="0" />
+	<File name="cargar.c" open="1" top="0" tabpos="7">
+		<Cursor position="588" topLine="0" />
 	</File>
-	<File name="cargar.c" open="1" top="0" tabpos="8">
-		<Cursor position="569" topLine="0" />
+	<File name="cliente/cliente.c" open="1" top="0" tabpos="9">
+		<Cursor position="468" topLine="0" />
 	</File>
-	<File name="cliente/cliente.c" open="1" top="0" tabpos="10">
-		<Cursor position="4479" topLine="81" />
+	<File name="guardar.c" open="1" top="0" tabpos="8">
+		<Cursor position="464" topLine="0" />
 	</File>
-	<File name="guardar.c" open="1" top="0" tabpos="9">
-		<Cursor position="445" topLine="0" />
-	</File>
-	<File name="insertar.c" open="1" top="0" tabpos="5">
-		<Cursor position="446" topLine="0" />
+	<File name="insertar.c" open="1" top="0" tabpos="4">
+		<Cursor position="448" topLine="0" />
 	</File>
 	<File name="main.c" open="1" top="1" tabpos="1">
-		<Cursor position="10501" topLine="402" />
+		<Cursor position="2932" topLine="69" />
 	</File>
 	<File name="visualizar.c" open="1" top="0" tabpos="3">
-		<Cursor position="446" topLine="0" />
+		<Cursor position="448" topLine="0" />
 	</File>
 </CodeBlocks_layout_file>

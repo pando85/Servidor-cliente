@@ -82,7 +82,7 @@ int main(int argc, char *argv[])
     }
 
     if (!preparar_entorno())
-        cerrar_programa(2);
+        cerrar_programa(SIGINT);
 
 
     error = pthread_create(&hilo_c_clientes, NULL,control_clientes, NULL);
@@ -267,6 +267,32 @@ int preparar_entorno()
     return TRUE;
 }
 
+void cerrar_programa(int sig)
+{
+    printf("Cerrando el control de clientes inactivos...\n");
+
+
+    printf("Guardando datos del arbol en el fichero...\n");
+    GuardarFichero(raizarbol);
+
+    printf("Cerrando clientes...\n");
+    cerrar_clientes(vector_clientes, num_clientes);
+
+    printf("Cerrando colas...\n");
+    borrar_cola(Q1);
+    borrar_cola(Q2);
+    borrar_cola(Q_clientes_activos);
+
+    printf("Cerrando semaforos...\n");
+    cerrar_semaforo(mutex, MUTEX);
+    cerrar_semaforo(s1, S1);
+    cerrar_semaforo(sclientes,SCLIENTES);
+
+    printf("Cerrando memoria compartida...\n");
+    liberar_memoria_compartida(memo);
+    exit(0);
+}
+
 int inicializar_cola(char nombre[], char id)
 {
     int cola;
@@ -390,35 +416,6 @@ void liberar_memoria_compartida(int memoria_compartida)
         return;
 
     shmctl(memoria_compartida, IPC_RMID, 0);
-}
-
-
-
-
-void cerrar_programa(int sig)
-{
-    printf("Cerrando el control de clientes inactivos...\n");
-
-
-    printf("Guardando datos del arbol en el fichero...\n");
-    GuardarFichero(raizarbol);
-
-    printf("Cerrando clientes...\n");
-    cerrar_clientes(vector_clientes, num_clientes);
-
-    printf("Cerrando colas...\n");
-    borrar_cola(Q1);
-    borrar_cola(Q2);
-    borrar_cola(Q_clientes_activos);
-
-    printf("Cerrando semaforos...\n");
-    cerrar_semaforo(mutex, MUTEX);
-    cerrar_semaforo(s1, S1);
-    cerrar_semaforo(sclientes,SCLIENTES);
-
-    printf("Cerrando memoria compartida...\n");
-    liberar_memoria_compartida(memo);
-    exit(0);
 }
 
 void *control_clientes(void *parametro)

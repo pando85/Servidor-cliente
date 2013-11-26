@@ -24,11 +24,19 @@ void atender_peticion(int sig);
 
 int main()
 {
-    int *dato_enviado,dato,err; // dato_enviado para insertar/buscar/borrar , err para buscar errores
-    int Q1,Q2,memo; // Identificadores colas y mem compartida
+    int *dato_enviado;
+    int dato;
+    int err;
+
+    // Identificadores colas y mem compartida
+    int Q1;
+    int Q2;
+    int memo;
 
     key_t llave1, llave2,llave3,keymemo; // llaves para la creacion de colas y memoria compartida
-    sem_t *s1, *mutex; // punteros para identificador de los semaforos
+
+    sem_t *s1;
+    sem_t *mutex;
 
     struct mensaje_peticion peticion;
     struct mensaje_respuesta respuesta;
