@@ -1,17 +1,8 @@
 # depslib dependency file v1.0
-1385338028 source:/Datos/Alex/Clase/5 curso/Computadores/Practicas/Practica 2/Servidor-cliente/cliente/cliente.c
-	<stdio.h>
-	<stdlib.h>
+1385505255 source:/Datos/Alex/Clase/5 curso/Computadores/Practicas/Practica 2/Servidor-cliente/cliente/cliente.c
 	"../arbol.h"
-	<sys/ipc.h>
-	<sys/msg.h>
-	<sys/shm.h>
-	<sys/errno.h>
-	<errno.h>
-	<semaphore.h>
-	<fcntl.h>
 
-1385476157 /Datos/Alex/Clase/5 curso/Computadores/Practicas/Practica 2/Servidor-cliente/arbol.h
+1385504616 /Datos/Alex/Clase/5 curso/Computadores/Practicas/Practica 2/Servidor-cliente/arbol.h
 	<stdio.h>
 	<stdlib.h>
 	<sys/ipc.h>
@@ -25,13 +16,10 @@
 	<unistd.h>
 	<pthread.h>
 
-1385338029 source:/Datos/Alex/Clase/5 curso/Computadores/Practicas/Practica 2/Servidor-cliente/baja.c
-	<stdio.h>
-	<stdlib.h>
+1385505000 source:/Datos/Alex/Clase/5 curso/Computadores/Practicas/Practica 2/Servidor-cliente/baja.c
 	"arbol.h"
-	<signal.h>
 
-1385424666 source:/Datos/Alex/Clase/5 curso/Computadores/Practicas/Practica 2/Servidor-cliente/borrar.c
+1385504215 source:/Datos/Alex/Clase/5 curso/Computadores/Practicas/Practica 2/Servidor-cliente/borrar.c
 	"arbol.h"
 
 1385424666 source:/Datos/Alex/Clase/5 curso/Computadores/Practicas/Practica 2/Servidor-cliente/buscar.c
@@ -59,9 +47,18 @@
 1385424666 source:/Datos/Alex/Clase/5 curso/Computadores/Practicas/Practica 2/Servidor-cliente/insertar.c
 	"arbol.h"
 
-1385476157 source:/Datos/Alex/Clase/5 curso/Computadores/Practicas/Practica 2/Servidor-cliente/main.c
+1385505149 source:/Datos/Alex/Clase/5 curso/Computadores/Practicas/Practica 2/Servidor-cliente/main.c
 	"arbol.h"
 
 1385424666 source:/Datos/Alex/Clase/5 curso/Computadores/Practicas/Practica 2/Servidor-cliente/visualizar.c
 	"arbol.h"
+
+1385505149 source:/Datos/Alex/Clase/5 curso/Computadores/Practicas/Practica 2/Servidor-cliente/comunicaciones.c
+	"arbol.h"
+
+1385505049 source:/Datos/Alex/Clase/5 curso/Computadores/Practicas/Practica 2/Servidor-cliente/control_clientes.c
+	"arbol.h"
+
+1385505501 source:/Datos/Alex/Clase/5 curso/Computadores/Practicas/Practica 2/Servidor-cliente/cliente/auxiliar_cliente.c
+	"../arbol.h"
 
