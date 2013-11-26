@@ -13,6 +13,7 @@ int Q_clientes_activos;
 struct mensaje_peticion cliente_activo;
 
 void atender_peticion(int sig);
+int abrir_cola(char nombre[], char id);
 /*****************************************************************/
 /* Nombre: main()                                                         */
 /* Descripción: Carga el menú principal.                                  */
@@ -33,7 +34,7 @@ int main()
     int Q2;
     int memo;
 
-    key_t llave1, llave2,llave3,keymemo; // llaves para la creacion de colas y memoria compartida
+    key_t keymemo; // llaves para la creacion de colas y memoria compartida
 
     sem_t *s1;
     sem_t *mutex;
@@ -43,42 +44,10 @@ int main()
 
     // ABRIENDO LAS COLAS
     printf("Abriendo colas...\n");
-    llave1=ftok("/bin",'3');
-    if(llave1==-1)
-    {
-        printf("¡Error! ftok fallo con errno = %d\n",errno);
-        exit(-1);
-    }
-    llave2=ftok("/bin",'4');
-    if(llave2==-1)
-    {
-        printf("¡Error! ftok fallo con errno = %d\n",errno);
-        exit(-1);
-    }
-    llave3=ftok("/bin",'7');
-    if(llave2==-1)
-    {
-        printf("¡Error! ftok fallo con errno = %d\n",errno);
-        exit(-1);
-    }
-    Q1= msgget(llave1, 0);
-    if(Q1==-1)
-    {
-        printf("¡Error! No esta ejecutado el servidor.\n");
-        exit(-1);
-    }
-    Q2= msgget(llave2, 0);
-    if(Q2==-1)
-    {
-        printf("¡Error! No esta ejecutado el servidor.\n");
-        exit(-1);
-    }
-    Q_clientes_activos= msgget(llave3, 0);
-    if(Q_clientes_activos==-1)
-    {
-        printf("¡Error! No esta ejecutado el servidor.\n");
-        exit(-1);
-    }
+    Q1 = abrir_cola("/bin",'3');
+    Q2 = abrir_cola("/bin",'4');
+    Q_clientes_activos = abrir_cola("/bin",'7');
+
 
     // ABRIENDO LA MEMORIA COMPARTIDA
     printf("Abriendo memoria compartida...\n");
@@ -130,7 +99,7 @@ int main()
 
     while(1)//peticion.codigo_operacion!=4
     {
-    /************************MENÚ*********************************/
+        /************************MENÚ*********************************/
         printf("\n\n\n\n");
         printf("1. Insertar elemento por valor\n");
         printf("2. Borrar elemento en árbol\n");
@@ -194,4 +163,24 @@ void atender_peticion(int sig)
     cliente_activo.tipo = getpid();
     cliente_activo.codigo_operacion = TRUE;
     msgsnd(Q_clientes_activos, &cliente_activo,sizeof(int),0);
+}
+
+int abrir_cola(char nombre[], char id)
+{
+    int cola;
+
+    key_t llave = ftok(nombre, id);
+    if(llave < 0)
+    {
+        printf("¡Error! ftok fallo con errno = %d\n",errno);
+        exit(-1);
+    }
+
+    cola = msgget(llave, 0);
+    if(cola < 0)
+    {
+        printf("¡Error! No esta ejecutado el servidor.\n");
+        exit(-1);
+    }
+    return cola;
 }
