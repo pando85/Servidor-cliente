@@ -30,6 +30,7 @@ struct mensaje_peticion cliente_activo;
 sem_t *sclientes = NULL;
 sigset_t senyal_bloqueada;
 
+
 // Cabeceras de funciones
 int preparar_entorno();
 int inicializar_cola(char nombre[], char id);
@@ -106,8 +107,7 @@ int main(int argc, char *argv[])
         respuesta.tipo=peticion.tipo;
         switch(peticion.codigo_operacion)
         {
-            // ALTA
-        case 0:
+        case ALTA:
             printf("Peticion de alta del cliente %d/%d, con pid %ld\n",num_clientes+1,max_clientes,peticion.tipo);
             vector_clientes[num_clientes]=peticion.tipo;
             sem_wait(sclientes);
@@ -117,17 +117,14 @@ int main(int argc, char *argv[])
             break;
 
 
-            // INSERTAR
-        case 1:
+        case INSERTAR:
             sem_wait(mutex);
             raizarbol=InsertarElemento(raizarbol,*dato);
             respuesta.codigo_error=NO_ERROR;
             sem_post(mutex);
             break;
 
-
-            // BORRAR
-        case 2:
+        case BORRAR:
             sem_wait(mutex);
             raizarbol=Borrar(raizarbol,*dato);
             respuesta.codigo_error=NO_ERROR;
@@ -135,8 +132,7 @@ int main(int argc, char *argv[])
             break;
 
 
-            // BUSCAR
-        case 3:
+        case BUSCAR:
             sem_wait(mutex);
             if(Buscar(raizarbol,*dato)!=NULL)
             {
@@ -150,8 +146,7 @@ int main(int argc, char *argv[])
             break;
 
 
-            // TERMINAR
-        case 4:
+        case TERMINAR:
             if(baja(peticion.tipo,vector_clientes,max_clientes)==ELIMINADO)
             {
                 sem_wait(sclientes);

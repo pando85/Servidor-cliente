@@ -81,7 +81,7 @@ int main()
     // Petición de alta
     printf("Petición de alta en el servidor...\n");
     peticion.tipo=getpid();
-    peticion.codigo_operacion=0;
+    peticion.codigo_operacion=ALTA;
     msgsnd(Q1, &peticion,sizeof(int),0);
     msgrcv(Q2,&respuesta,sizeof(int),getpid(),0);
 
@@ -90,10 +90,10 @@ int main()
     {
         /************************MENÚ*********************************/
         printf("\n\n\n\n");
-        printf("1. Insertar elemento por valor\n");
-        printf("2. Borrar elemento en árbol\n");
-        printf("3. Buscar elemento por valor\n");
-        printf("4. Salir\n");
+        printf("%d. Insertar elemento por valor\n",INSERTAR);
+        printf("%d. Borrar elemento en árbol\n",BORRAR);
+        printf("%d. Buscar elemento por valor\n",BUSCAR);
+        printf("%d. Salir\n",TERMINAR);
         printf("\n\n\n");
 
         __fpurge(stdin);

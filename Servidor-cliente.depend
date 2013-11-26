@@ -11,7 +11,7 @@
 	<semaphore.h>
 	<fcntl.h>
 
-1385416036 /Datos/Alex/Clase/5 curso/Computadores/Practicas/Practica 2/Servidor-cliente/arbol.h
+1385476157 /Datos/Alex/Clase/5 curso/Computadores/Practicas/Practica 2/Servidor-cliente/arbol.h
 	<stdio.h>
 	<stdlib.h>
 	<sys/ipc.h>
@@ -31,13 +31,13 @@
 	"arbol.h"
 	<signal.h>
 
-1385379472 source:/Datos/Alex/Clase/5 curso/Computadores/Practicas/Practica 2/Servidor-cliente/borrar.c
+1385424666 source:/Datos/Alex/Clase/5 curso/Computadores/Practicas/Practica 2/Servidor-cliente/borrar.c
 	"arbol.h"
 
-1385379472 source:/Datos/Alex/Clase/5 curso/Computadores/Practicas/Practica 2/Servidor-cliente/buscar.c
+1385424666 source:/Datos/Alex/Clase/5 curso/Computadores/Practicas/Practica 2/Servidor-cliente/buscar.c
 	"arbol.h"
 
-1385379472 source:/Datos/Alex/Clase/5 curso/Computadores/Practicas/Practica 2/Servidor-cliente/cargar.c
+1385424666 source:/Datos/Alex/Clase/5 curso/Computadores/Practicas/Practica 2/Servidor-cliente/cargar.c
 	"arbol.h"
 
 1385338029 source:/Datos/Alex/Clase/5 curso/Computadores/Practicas/Practica 2/Servidor-cliente/cerrar.c
@@ -53,15 +53,15 @@
 	<fcntl.h>
 	<signal.h>
 
-1385379472 source:/Datos/Alex/Clase/5 curso/Computadores/Practicas/Practica 2/Servidor-cliente/guardar.c
+1385424666 source:/Datos/Alex/Clase/5 curso/Computadores/Practicas/Practica 2/Servidor-cliente/guardar.c
 	"arbol.h"
 
-1385379472 source:/Datos/Alex/Clase/5 curso/Computadores/Practicas/Practica 2/Servidor-cliente/insertar.c
+1385424666 source:/Datos/Alex/Clase/5 curso/Computadores/Practicas/Practica 2/Servidor-cliente/insertar.c
 	"arbol.h"
 
-1385418596 source:/Datos/Alex/Clase/5 curso/Computadores/Practicas/Practica 2/Servidor-cliente/main.c
+1385476157 source:/Datos/Alex/Clase/5 curso/Computadores/Practicas/Practica 2/Servidor-cliente/main.c
 	"arbol.h"
 
-1385379472 source:/Datos/Alex/Clase/5 curso/Computadores/Practicas/Practica 2/Servidor-cliente/visualizar.c
+1385424666 source:/Datos/Alex/Clase/5 curso/Computadores/Practicas/Practica 2/Servidor-cliente/visualizar.c
 	"arbol.h"
 

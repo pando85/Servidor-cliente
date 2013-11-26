@@ -19,15 +19,28 @@
 #define MUTEX "/semMUTEX"
 #define S1 "/semS1"
 #define SCLIENTES "/semSCLIENTES"
+/*
+ *  Control clientes activos
+ */
 #define TIEMPO_RESPUESTA 5
 #define TIEMPO_ESPERA 20
 
-/******************************************ERRORES*******************************************************/
+/*
+ *  Errores
+ */
 #define NO_ERROR 0
 #define ERROR_NO_BAJA 1
 #define ENCONTRADO 2
 #define NO_ENCONTRADO 3
-/*********************************************************************************************************/
+/*
+ *  Opciones generales
+ */
+#define ALTA 0
+#define INSERTAR 1
+#define BORRAR 2
+#define BUSCAR 3
+#define TERMINAR 4
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/ipc.h>
@@ -61,7 +74,6 @@ struct mensaje_respuesta
     long tipo;
     int codigo_error;
 };
-
 
 
 
