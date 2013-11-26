@@ -120,6 +120,11 @@ void cerrar_programa(int sig);
 void *control_clientes(void *parametro);
 void matar_cliente_inactivo(int sig);
 int baja(int pid,int *vector_clientes,int max_clientes);
-
+/*
+ *  Funciones cliente.c
+ */
+void atender_peticion(int sig);
+int abrir_cola(char nombre[], char id);
+int abrir_memoria_compartida(char nombre[], char id);
 
 #endif

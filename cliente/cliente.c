@@ -12,9 +12,7 @@
 int Q_clientes_activos;
 struct mensaje_peticion cliente_activo;
 
-void atender_peticion(int sig);
-int abrir_cola(char nombre[], char id);
-int abrir_memoria_compartida(char nombre[], char id);
+
 /*****************************************************************/
 /* Nombre: main()                                                         */
 /* Descripción: Carga el menú principal.                                  */
