@@ -1,9 +1,9 @@
-/*****************************************************************/
-/* Nombre: main.c                                                         */
-/* Contiene la función principal del programa con el menú:                */
-/* main()                                                                 */
-/*                                                                        */
-/*****************************************************************/
+/*
+ * Nombre: main.c
+ * Contiene la función principal del programa con el menú:
+ * main()
+ *
+ */
 
 
 
@@ -11,13 +11,13 @@
 #include "arbol.h"
 
 
-/*****************************************************************/
-/* Nombre: main()                                                         */
-/* Descripción: Carga el menú principal.                                  */
-/* Argumentos: 	Nº máximo de clientes.                                    */
-/* Valor Devuelto: 0 si se ha ejecutado con éxito el programa.            */
-/* Alexander Gil Casas. 2013.                                             */
-/*****************************************************************/
+/*
+ * Nombre: main()
+ * Descripción: Contiene el servidor con todas sus funciones.
+ * Argumentos: 	Nº máximo de clientes.
+ * Valor Devuelto: 0 si se ha ejecutado con éxito el programa.
+ * Alexander Gil Casas. 2013.
+ */
 
 
 int main(int argc, char *argv[])
@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
 
         case INSERTAR:
             sem_wait(mutex);
-            raizarbol=InsertarElemento(raizarbol,*dato);
+            raizarbol=insertar_elemento(raizarbol,*dato);
             respuesta.codigo_error=NO_ERROR;
             sem_post(mutex);
             break;
@@ -83,14 +83,14 @@ int main(int argc, char *argv[])
         case BORRAR:
             sem_wait(mutex);
             respuesta.codigo_error=NO_ERROR;
-            raizarbol=Borrar(raizarbol,*dato);
+            raizarbol=borrar(raizarbol,*dato);
             sem_post(mutex);
             break;
 
 
         case BUSCAR:
             sem_wait(mutex);
-            if(Buscar(raizarbol,*dato)!=NULL)
+            if(buscar(raizarbol,*dato)!=NULL)
             {
                 respuesta.codigo_error=ENCONTRADO;
             }
@@ -103,7 +103,7 @@ int main(int argc, char *argv[])
 
 
         case TERMINAR:
-            if(baja(peticion.tipo,vector_clientes,max_clientes)==ELIMINADO)
+            if(baja(peticion.tipo)==ELIMINADO)
             {
                 sem_wait(sclientes);
                 num_clientes--;
@@ -125,7 +125,7 @@ int main(int argc, char *argv[])
         msgsnd(Q2, &respuesta, sizeof(int),0);
 
         printf("\n\n");
-        Visualizar(raizarbol);
+        visualizar(raizarbol);
         printf("\n\n");
 
 

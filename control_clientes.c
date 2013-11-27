@@ -1,23 +1,22 @@
-/*****************************************************************/
-/* Nombre: main.c                                                         */
-/* Contiene la función principal del programa con el menú:                */
-/* main()                                                                 */
-/*                                                                        */
-/*****************************************************************/
-
-
+/*
+ * Nombre: control_clientes.c
+ * Contiene las funciones necesarias para implementar el control de clientes activos en el servidor:
+ * control_clientes()
+ *
+ */
 
 
 #include "arbol.h"
 
 
-/*****************************************************************/
-/* Nombre: main()                                                         */
-/* Descripción: Carga el menú principal.                                  */
-/* Argumentos: 	Nº máximo de clientes.                                    */
-/* Valor Devuelto: 0 si se ha ejecutado con éxito el programa.            */
-/* Alexander Gil Casas. 2013.                                             */
-/*****************************************************************/
+/*
+ * Nombre: controlclientes()
+ * Descripción: Manda un mensaje para controlar la actividad de cada cliente( cada TIEMPO_ESPERA segundos), si el mensaje no es contestado
+ * en el TIEMPO_RESPUESTA se llama a la función matar_cliente_inactivo.
+ * Argumentos: 	Ninguno.
+ * Valor Devuelto: Ninguno.
+ * Alexander Gil Casas. 2013.
+ */
 void *control_clientes(void *parametro)
 {
     int i;
@@ -41,10 +40,17 @@ void *control_clientes(void *parametro)
     }
 }
 
+/*
+ * Nombre: matar_cliente_inactivo()
+ * Descripción: Hace uso de la función baja() para eliminar un cliente que no ha respondido a la petición del servidor.
+ * Argumentos: 	Señal SIGALRM.
+ * Valor Devuelto: Ninguno.
+ * Alexander Gil Casas. 2013.
+ */
 void matar_cliente_inactivo(int sig)
 {
 
-    if(baja(matar_pid,vector_clientes,max_clientes)==ELIMINADO)
+    if(baja(matar_pid)==ELIMINADO)
     {
         sem_wait(sclientes);
         num_clientes--;

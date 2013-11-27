@@ -1,22 +1,22 @@
-/*****************************************************************/
-/* Nombre: guardar.c                                                      */
-/* Contiene dos funciones para guardar el árbol en un fichero:            */
-/* GuardarFichero()                                                       */
-/* Guardar()                                                              */
-/*****************************************************************/
+/*
+ * Nombre: guardar.c
+ * Contiene dos funciones para guardar el árbol en un fichero:
+ * guardar_fichero()
+ * guardar()
+ */
 
 #include "arbol.h"
 
 
 
-/*****************************************************************/
-/* Nombre: GuardarFichero()                                                */
-/* Descripción: Crea un fichero y llama a la función guardar.              */
-/* Argumentos: 	Puntero a la raíz del árbol.                               */
-/* Valor Devuelto: Nada.                                                   */
-/*****************************************************************/
+/*
+ * Nombre: guardar_fichero()
+ * Descripción: Crea el fichero "arbol.data" y llama a la función guardar.
+ * Argumentos: 	Puntero a la raíz del árbol.
+ * Valor Devuelto: Nada.
+ */
 
-void GuardarFichero(Nodo* raiz)
+void guardar_fichero(Nodo* raiz)
 {
     FILE *fp1;
     if (raiz==NULL)
@@ -31,7 +31,7 @@ void GuardarFichero(Nodo* raiz)
         printf("\n\n\t\t­­Error en la apertura del fichero.");
         return;
     }
-    Guardar(raiz,fp1);
+    guardar(raiz,fp1);
     fclose(fp1);
 
     return;
@@ -43,20 +43,20 @@ void GuardarFichero(Nodo* raiz)
 
 
 
-/*****************************************************************/
-/* Nombre: Guardar()                                                       */
-/* Descripción: Guarda el árbol en inorden en un archivo de texto.          */
-/* Argumentos: 	Puntero a la raíz del árbol , puntero al fichero.         */
-/* Valor Devuelto: Puntero al fichero.                                    */
-/*****************************************************************/
+/*
+ * Nombre: guardar()
+ * Descripción: Guarda el árbol en inorden en un archivo de texto.
+ * Argumentos: 	Puntero a la raíz del árbol , puntero al fichero.
+ * Valor Devuelto: Puntero al fichero.
+ */
 
-FILE* Guardar(Nodo* raiz,FILE *fp1)
+FILE* guardar(Nodo* raiz,FILE *fp1)
 {
     if(raiz!=NULL)
     {
-        fp1=Guardar(raiz->izq,fp1);
+        fp1=guardar(raiz->izq,fp1);
         fprintf(fp1,"%d\n",raiz->dato);
-        fp1=Guardar(raiz->der,fp1);
+        fp1=guardar(raiz->der,fp1);
     }
     return fp1;
 }

@@ -1,27 +1,27 @@
-/*****************************************************************/
-/* Nombre: borrar.c                                                       */
-/* Contiene una función para borrar elementos del árbol:                  */
-/* Borrar()                                                               */
-/*                                                                        */
-/*****************************************************************/
+/*
+ * Nombre: borrar.c
+ * Contiene una función para borrar elementos del árbol:
+ * Borrar()
+ *
+ */
 
 #include "arbol.h"
 
 
-/*****************************************************************/
-/* Nombre: Borrar()                                                       */
-/* Descripción: Borra un elemento de la lista.                            */
-/* Argumentos: 	Puntero a la raíz del árbol , dato a borrar.              */
-/* Valor Devuelto: Puntero a la raíz del árbol.                           */
-/* Alexander Gil Casas. 2013.                                             */
-/*****************************************************************/
+/*
+ * Nombre: borrar()
+ * Descripción: Borra un elemento de la lista.
+ * Argumentos: 	Puntero a la raíz del árbol , dato a borrar.
+ * Valor Devuelto: Puntero a la raíz del árbol.
+ * Alexander Gil Casas. 2013.
+ */
 
 
-Nodo* Borrar(Nodo* raiz,int d)
+Nodo* borrar(Nodo* raiz,int d)
 {
     Nodo *paux1,*paux2,*borr,*padre;//paux1= dato a intercambiar, paux2= puntero auxiliar
-    borr=Buscar(raiz,d); //Puntero al dato a borrar
-    padre=BuscarPadre(raiz,d);
+    borr=buscar(raiz,d); //Puntero al dato a borrar
+    padre=buscar_padre(raiz,d);
     if(borr!=NULL) // Si no existe el dato en el árbol no borramos nada
     {
         /********************************************BORRAR HOJA******************************************/
@@ -60,7 +60,7 @@ Nodo* Borrar(Nodo* raiz,int d)
                     }
                     if(padre->dato>d) // Cambiamos padre->izq
                     {
-                        paux2=BuscarPadre(raiz,paux1->dato);//paux2=Padre del dato a intercambiar
+                        paux2=buscar_padre(raiz,paux1->dato);//paux2=Padre del dato a intercambiar
                         padre->izq=paux1;
 
                         if(paux2->dato!=borr->dato) //Si el padre del dato cambiado y el dato borrado son distinto nodo
@@ -73,7 +73,7 @@ Nodo* Borrar(Nodo* raiz,int d)
                     }
                     else // Cambiamos padre->der
                     {
-                        paux2=BuscarPadre(raiz,paux1->dato);//paux2=Padre del dato a intercambiar
+                        paux2=buscar_padre(raiz,paux1->dato);//paux2=Padre del dato a intercambiar
                         padre->der=paux1;
                         if(paux2->dato!=borr->dato)
                         {
@@ -96,7 +96,7 @@ Nodo* Borrar(Nodo* raiz,int d)
                     }
                     if(padre->dato>d) // Hay que cambiar padre->izq
                     {
-                        paux2=BuscarPadre(raiz,paux1->dato);//paux2=Padre del dato a intercambiar
+                        paux2=buscar_padre(raiz,paux1->dato);//paux2=Padre del dato a intercambiar
                         padre->izq=paux1;
 
                         if(paux2->dato!=borr->dato)
@@ -110,7 +110,7 @@ Nodo* Borrar(Nodo* raiz,int d)
                     }
                     else // Hay que cambiar padre->der
                     {
-                        paux2=BuscarPadre(raiz,paux1->dato);//paux2=Padre del dato a intercambiar
+                        paux2=buscar_padre(raiz,paux1->dato);//paux2=Padre del dato a intercambiar
                         padre->der=paux1;
                         if(paux2->dato!=borr->dato)
                         {
@@ -135,7 +135,7 @@ Nodo* Borrar(Nodo* raiz,int d)
                         paux1=paux2;
                         paux2=paux1->der;
                     }
-                    paux2=BuscarPadre(raiz,paux1->dato);//paux2=Padre del dato a intercambiar
+                    paux2=buscar_padre(raiz,paux1->dato);//paux2=Padre del dato a intercambiar
                     if(paux2->dato!=borr->dato) //Si el padre del dato cambiado y el dato borrado son distinto nodo
                     {
                         paux2->der=paux1->izq; // El padre del dato cambiado ya no tiene que apuntar al dato cambiado
@@ -152,7 +152,7 @@ Nodo* Borrar(Nodo* raiz,int d)
                         paux1=paux2;
                         paux2=paux1->izq;
                     }
-                    paux2=BuscarPadre(raiz,paux1->dato);//paux2=Padre del dato a intercambiar
+                    paux2=buscar_padre(raiz,paux1->dato);//paux2=Padre del dato a intercambiar
                     if(paux2->dato!=borr->dato)
                     {
                         paux2->izq=paux1->der; // El padre del dato cambiado ya no tiene que apuntar al dato cambiado

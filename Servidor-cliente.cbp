@@ -40,6 +40,10 @@
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
 		<Unit filename="arbol.h" />
+		<Unit filename="baja.c">
+			<Option compilerVar="CC" />
+			<Option target="servidor" />
+		</Unit>
 		<Unit filename="borrar.c">
 			<Option compilerVar="CC" />
 			<Option target="servidor" />
@@ -52,9 +56,21 @@
 			<Option compilerVar="CC" />
 			<Option target="servidor" />
 		</Unit>
+		<Unit filename="cliente/auxiliar_cliente.c">
+			<Option compilerVar="CC" />
+			<Option target="cliente" />
+		</Unit>
 		<Unit filename="cliente/cliente.c">
 			<Option compilerVar="CC" />
 			<Option target="cliente" />
+		</Unit>
+		<Unit filename="comunicaciones.c">
+			<Option compilerVar="CC" />
+			<Option target="servidor" />
+		</Unit>
+		<Unit filename="control_clientes.c">
+			<Option compilerVar="CC" />
+			<Option target="servidor" />
 		</Unit>
 		<Unit filename="guardar.c">
 			<Option compilerVar="CC" />

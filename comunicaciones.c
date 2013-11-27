@@ -1,23 +1,30 @@
-/*****************************************************************/
-/* Nombre: main.c                                                         */
-/* Contiene la función principal del programa con el menú:                */
-/* main()                                                                 */
-/*                                                                        */
-/*****************************************************************/
-
+/*
+ * Nombre: comunicaciones.c
+ * Contiene las funciones necesarias para inicializar/cerrar las colas, semaforos y memoria compartida del servidor.
+ * Tienen nombres autoexplicativos y queda perfectamente definido a que se dedica cada una de ellas.
+ * preparar_entorno()
+ * cerrar_programa()
+ * inicializar_cola()
+ * es_cola_correcta()
+ * inicializar_memoria_compartida()
+ * es_memoria_correcta()
+ * inicializar_semaforo()
+ * es_semaforo_correcto()
+ * inicializar_clientes()
+ * son_clientes_correctos()
+ * get_inicio_memoria_compartida()
+ * borrar_cola()
+ * cerrar_clientes()
+ * cerrar_semaforo()
+ * liberar_memoria_compartida()
+ *
+ */
 
 
 
 #include "arbol.h"
 
 
-/*****************************************************************/
-/* Nombre: main()                                                         */
-/* Descripción: Carga el menú principal.                                  */
-/* Argumentos: 	Nº máximo de clientes.                                    */
-/* Valor Devuelto: 0 si se ha ejecutado con éxito el programa.            */
-/* Alexander Gil Casas. 2013.                                             */
-/*****************************************************************/
 
 int preparar_entorno()
 {
@@ -84,7 +91,7 @@ int preparar_entorno()
 
     printf("Cargando datos del arbol desde el fichero...\n");
     // Cargar fichero
-    raizarbol=CargarOrdenado(raizarbol);
+    raizarbol=cargar_ordenado(raizarbol);
 
     if(!es_arbol_correcto(raizarbol))
     {
@@ -107,7 +114,7 @@ void cerrar_programa(int sig)
 
 
     printf("Guardando datos del arbol en el fichero...\n");
-    GuardarFichero(raizarbol);
+    guardar_fichero(raizarbol);
 
     printf("Cerrando clientes...\n");
     cerrar_clientes(vector_clientes, num_clientes);

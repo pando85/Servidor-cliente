@@ -1,31 +1,31 @@
-/*****************************************************************/
-/* Nombre: visualizar.c                                                   */
-/* Contiene una función para visualizar los elementos del árbol:          */
-/* Visualizar()                                                           */
-/*                                                                        */
-/*****************************************************************/
+/*
+ * Nombre: visualizar.c
+ * Contiene una función para visualizar los elementos del árbol:
+ * visualizar()
+ *
+ */
 
 
 #include "arbol.h"
 
 
 
-/*****************************************************************/
-/* Nombre: Visualizar()                                                   */
-/* Descripción: Vislualiza toda la lista en orden.                        */
-/* Argumentos: 	Puntero a la raíz del árbol                               */
-/* Valor Devuelto: Puntero a la hoja actual del árbol.                    */
-/* Alexander Gil Casas. 2013.                                             */
-/*****************************************************************/
+/*
+ * Nombre: visualizar()
+ * Descripción: Vislualiza toda la lista en orden.
+ * Argumentos: 	Puntero a la raíz del árbol
+ * Valor Devuelto: Puntero a la hoja actual del árbol.
+ * Alexander Gil Casas. 2013.
+ */
 
 
-Nodo* Visualizar(Nodo* raiz)
+Nodo* visualizar(Nodo* raiz)
 {
     if (raiz != NULL)
     {
-        Visualizar(raiz->izq);
+        visualizar(raiz->izq);
         printf(" %d ",raiz->dato);
-        Visualizar(raiz->der);
+        visualizar(raiz->der);
     }
     return raiz;
 }

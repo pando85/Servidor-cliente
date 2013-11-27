@@ -1,22 +1,21 @@
-/*****************************************************************/
-/* Nombre: cliente.c                                                      */
-/* Contiene el cliente del programa con el menú:                          */
-/* main()                                                                 */
-/*                                                                        */
-/*****************************************************************/
+/*
+ * Nombre: cliente.c
+ * Contiene la función principal del cliente:
+ * main()
+ *
+ */
 
 #include "../arbol.h"
 
 
 
-/*****************************************************************/
-/* Nombre: main()                                                         */
-/* Descripción: Carga el menú principal.                                  */
-/* Argumentos:                                                            */
-/* Valor Devuelto: 0 si se ha ejecutado con éxito el programa.            */
-/* Alexander Gil Casas. 2013.                                             */
-/*****************************************************************/
-
+/*
+ * Nombre: main()
+ * Descripción: Contiene el cliente con todas sus funciones.
+ * Argumentos: 	Ninguno.
+ * Valor Devuelto: Ninguno.
+ * Alexander Gil Casas. 2013.
+ */
 
 int main()
 {

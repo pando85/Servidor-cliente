@@ -1,10 +1,10 @@
-/***********************************************************************/
-/* Nombre: arbol.h                                                               */
-/* Contiene las declaraciones de todas las funciones y el tipo de estructura     */
-/* empleado en el árbol del programa.                                            */
-/*                                                                               */
-/*                                                                               */
-/***********************************************************************/
+/*
+ * Nombre: arbol.h
+ * Contiene las declaraciones de todas las funciones y el tipo de estructura
+ * empleado en el árbol del programa.
+ *
+ *
+ */
 #ifndef _ARBOL_H
 #define _ARBOL_H
 
@@ -12,6 +12,7 @@
 #define FALSE 0
 #define TRUE 1
 
+#define NO_ELIMINADO 0
 #define ELIMINADO 1
 /*
  *  Defines: Control memoria compartida
@@ -115,17 +116,17 @@ sigset_t senyal_bloqueada;
 /*
  *  Funciones main.c
  */
-Nodo* Cargar(Nodo* raiz);
-Nodo* InsertarElemento(Nodo* raiz,int d);
-Nodo* Visualizar(Nodo* raiz);
-Nodo* Buscar(Nodo* raiz,int d);
-Nodo* Borrar(Nodo* raiz,int d);
-Nodo* BuscarPadre(Nodo* raiz,int d);
-FILE* Guardar(Nodo* raiz,FILE *fp1);
-void GuardarFichero(Nodo* raiz);
-int Contar(Nodo* raiz);
-Nodo* CargarOrdenado(Nodo* raiz);
-Nodo* InsertarOrdenado(int inicio,int final,int *datos,Nodo* raiz);
+Nodo* cargar(Nodo* raiz);
+Nodo* insertar_elemento(Nodo* raiz,int d);
+Nodo* visualizar(Nodo* raiz);
+Nodo* buscar(Nodo* raiz,int d);
+Nodo* borrar(Nodo* raiz,int d);
+Nodo* buscar_padre(Nodo* raiz,int d);
+FILE* guardar(Nodo* raiz,FILE *fp1);
+void guardar_fichero(Nodo* raiz);
+int contar(Nodo* raiz);
+Nodo* cargar_ordenado(Nodo* raiz);
+Nodo* insertar_ordenado(int inicio,int final,int *datos,Nodo* raiz);
 int preparar_entorno();
 int inicializar_cola(char nombre[], char id);
 int inicializar_memoria_compartida(char nombre[], char id);
@@ -144,7 +145,7 @@ void liberar_memoria_compartida(int memoria_compartida);
 void cerrar_programa(int sig);
 void *control_clientes(void *parametro);
 void matar_cliente_inactivo(int sig);
-int baja(int pid,int *vector_clientes,int max_clientes);
+int baja(int pid);
 /*
  *  Funciones cliente.c
  */
