@@ -1,43 +1,43 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
-	<ActiveTarget name="cliente" />
-	<File name="arbol.h" open="1" top="1" tabpos="2">
-		<Cursor position="610" topLine="9" />
+	<ActiveTarget name="servidor" />
+	<File name="arbol.h" open="1" top="0" tabpos="2">
+		<Cursor position="2217" topLine="105" />
 	</File>
 	<File name="baja.c" open="1" top="0" tabpos="9">
-		<Cursor position="0" topLine="0" />
+		<Cursor position="133" topLine="0" />
 	</File>
 	<File name="borrar.c" open="1" top="0" tabpos="5">
-		<Cursor position="7392" topLine="140" />
+		<Cursor position="5974" topLine="140" />
 	</File>
-	<File name="buscar.c" open="1" top="0" tabpos="6">
-		<Cursor position="1429" topLine="18" />
+	<File name="buscar.c" open="1" top="1" tabpos="6">
+		<Cursor position="1428" topLine="3" />
 	</File>
 	<File name="cargar.c" open="1" top="0" tabpos="7">
-		<Cursor position="588" topLine="0" />
+		<Cursor position="2819" topLine="88" />
 	</File>
 	<File name="cliente/auxiliar_cliente.c" open="1" top="0" tabpos="13">
-		<Cursor position="1521" topLine="26" />
+		<Cursor position="151" topLine="0" />
 	</File>
 	<File name="cliente/cliente.c" open="1" top="0" tabpos="12">
-		<Cursor position="2615" topLine="0" />
+		<Cursor position="114" topLine="0" />
 	</File>
 	<File name="comunicaciones.c" open="1" top="0" tabpos="11">
-		<Cursor position="5305" topLine="0" />
+		<Cursor position="2587" topLine="80" />
 	</File>
 	<File name="control_clientes.c" open="1" top="0" tabpos="10">
-		<Cursor position="0" topLine="0" />
+		<Cursor position="186" topLine="0" />
 	</File>
 	<File name="guardar.c" open="1" top="0" tabpos="8">
-		<Cursor position="464" topLine="0" />
+		<Cursor position="356" topLine="3" />
 	</File>
 	<File name="insertar.c" open="1" top="0" tabpos="4">
-		<Cursor position="448" topLine="0" />
+		<Cursor position="1222" topLine="18" />
 	</File>
 	<File name="main.c" open="1" top="0" tabpos="1">
-		<Cursor position="2233" topLine="101" />
+		<Cursor position="1952" topLine="77" />
 	</File>
 	<File name="visualizar.c" open="1" top="0" tabpos="3">
-		<Cursor position="448" topLine="0" />
+		<Cursor position="501" topLine="0" />
 	</File>
 </CodeBlocks_layout_file>
