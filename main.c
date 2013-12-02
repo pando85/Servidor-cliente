@@ -61,6 +61,7 @@ int main(int argc, char *argv[])
     {
         msgrcv(Q1,&peticion,sizeof(int),0,0);
         respuesta.tipo=peticion.tipo;
+
         operacion_arbol();
 
         msgsnd(Q2, &respuesta, sizeof(int),0);
