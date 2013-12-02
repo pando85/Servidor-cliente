@@ -50,10 +50,6 @@ int main()
         exit(-1);
     }
 
-    // Bloqueo si num_clientes>nmax_clientes
-    printf("Esperando hueco en el servidor...\n");
-    sem_wait(s1);
-
     dato_enviado=shmat(memo,0,0);
 
     signal (SIGUSR1,atender_peticion);
@@ -64,6 +60,12 @@ int main()
     peticion.codigo_operacion=ALTA;
     msgsnd(Q1, &peticion,sizeof(int),0);
     msgrcv(Q2,&respuesta,sizeof(int),getpid(),0);
+
+    // Bloqueo si num_clientes>nmax_clientes
+    printf("Esperando hueco en el servidor...\n");
+    sem_wait(s1);
+
+
 
 
     while(1)//peticion.codigo_operacion!=4

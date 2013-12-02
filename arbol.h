@@ -12,6 +12,9 @@
 #define FALSE 0
 #define TRUE 1
 
+// Clientes máximos a la espera = clientes max * RANGO_CLIENTES_ESPERANDO
+#define RANGO_CLIENTES_ESPERANDO 10
+
 #define NO_ELIMINADO 0
 #define ELIMINADO 1
 /*
@@ -25,8 +28,11 @@
 /*
  *  Defines: Control clientes activos
  */
+ // TIEMPO_RESPUESTA es el tiempo máximo que se le permite al cliente tardar en responder
 #define TIEMPO_RESPUESTA 5
+// TIMPO_ESPERA es el tiempo entre comprobaciones de actividad de los clientes
 #define TIEMPO_ESPERA 20
+// TIEMPO_PANTALLA es el tiempo que se muestra en pantalla la respuesta del servidor a una petición del cliente (en el cliente)
 #define TIEMPO_PANTALLA 2
 
 /*
@@ -146,7 +152,7 @@ void cerrar_programa(int sig);
 void *control_clientes(void *parametro);
 void matar_cliente_inactivo(int sig);
 int baja(int pid);
-void operacion_arbol(void);
+void operacion_arbol();
 /*
  *  Funciones cliente.c
  */

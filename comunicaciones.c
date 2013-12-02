@@ -17,7 +17,7 @@
  * cerrar_clientes()
  * cerrar_semaforo()
  * liberar_memoria_compartida()
- *
+ * operacion_arbol()
  */
 
 
@@ -136,8 +136,6 @@ void cerrar_programa(int sig)
 
 operacion_arbol()
 {
-
-
     switch(peticion.codigo_operacion)
     {
     case ALTA:
@@ -196,7 +194,7 @@ operacion_arbol()
         break;
 
 
-
+    return;
     }
 }
 
@@ -271,7 +269,7 @@ int es_semaforo_correcto(sem_t *semaforo)
 
 int *inicializar_clientes(int numero_clientes)
 {
-    size_t tamanyo_memoria = sizeof(pid_t) * (size_t)numero_clientes;
+    size_t tamanyo_memoria = RANGO_CLIENTES_ESPERANDO * sizeof(pid_t) * (size_t)numero_clientes;
     return (int *)malloc(tamanyo_memoria);
 }
 
