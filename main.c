@@ -61,66 +61,7 @@ int main(int argc, char *argv[])
     {
         msgrcv(Q1,&peticion,sizeof(int),0,0);
         respuesta.tipo=peticion.tipo;
-        switch(peticion.codigo_operacion)
-        {
-        case ALTA:
-            printf("Peticion de alta del cliente %d/%d, con pid %ld\n",num_clientes+1,max_clientes,peticion.tipo);
-            vector_clientes[num_clientes]=peticion.tipo;
-            sem_wait(sclientes);
-            num_clientes++;
-            sem_post(sclientes);
-            respuesta.codigo_error=NO_ERROR;
-            break;
-
-
-        case INSERTAR:
-            sem_wait(mutex);
-            raizarbol=insertar_elemento(raizarbol,*dato);
-            respuesta.codigo_error=NO_ERROR;
-            sem_post(mutex);
-            break;
-
-        case BORRAR:
-            sem_wait(mutex);
-            respuesta.codigo_error=NO_ERROR;
-            raizarbol=borrar(raizarbol,*dato);
-            sem_post(mutex);
-            break;
-
-
-        case BUSCAR:
-            sem_wait(mutex);
-            if(buscar(raizarbol,*dato)!=NULL)
-            {
-                respuesta.codigo_error=ENCONTRADO;
-            }
-            else
-            {
-                respuesta.codigo_error=NO_ENCONTRADO;
-            }
-            sem_post(mutex);
-            break;
-
-
-        case TERMINAR:
-            if(baja(peticion.tipo)==ELIMINADO)
-            {
-                sem_wait(sclientes);
-                num_clientes--;
-                sem_post(sclientes);
-                printf("Peticion de baja del cliente %ld, clientes conectados %d/%d\n",peticion.tipo,num_clientes,max_clientes);
-                respuesta.codigo_error=NO_ERROR;
-                sem_post(s1);
-            }
-            else
-            {
-                respuesta.codigo_error=ERROR_NO_BAJA;
-            }
-            break;
-
-
-
-        }
+        operacion_arbol();
 
         msgsnd(Q2, &respuesta, sizeof(int),0);
 

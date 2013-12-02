@@ -146,6 +146,7 @@ void cerrar_programa(int sig);
 void *control_clientes(void *parametro);
 void matar_cliente_inactivo(int sig);
 int baja(int pid);
+void operacion_arbol(void);
 /*
  *  Funciones cliente.c
  */
