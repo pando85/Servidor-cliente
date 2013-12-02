@@ -1,3 +1,6 @@
+# Log files
+*.log
+
 # Temporal files
 *~
 

@@ -51,6 +51,12 @@
 #define BUSCAR 3
 #define TERMINAR 4
 /*
+ *  Defines: Archivo log
+ */
+ #define INICIAR 1
+ #define OPERACION 2
+ #define CIERRE 3
+/*
  *  Librerias
  */
 #include <stdio.h>
@@ -65,7 +71,7 @@
 #include <signal.h>
 #include <unistd.h>
 #include <pthread.h>
-
+#include <time.h>
 
 
 typedef struct NodoArbol
@@ -107,6 +113,7 @@ struct mensaje_respuesta respuesta;
 Nodo *raizarbol;
 int *vector_clientes;
 int num_clientes;
+FILE *logfile;
 /*
  *  Declaraciones control_clientes
  */
@@ -153,6 +160,7 @@ void *control_clientes(void *parametro);
 void matar_cliente_inactivo(int sig);
 int baja(int pid);
 void operacion_arbol();
+void registrando_en_logfile(int tipo_operacion);
 /*
  *  Funciones cliente.c
  */

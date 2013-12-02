@@ -105,6 +105,14 @@ int preparar_entorno()
     // Dato apunta a la memoria compartida
     dato = get_inicio_memoria_compartida(memo);
 
+    printf("Creando fichero para guardar el log del sistema...\n");
+    logfile=fopen("servidor.log","a");
+    if(logfile==NULL)
+    {
+        printf("\n­­Error en la apertura/creación del log.\n\n");
+        return FALSE;
+    }
+    registrando_en_logfile(INICIAR);
     return TRUE;
 }
 
@@ -112,9 +120,12 @@ void cerrar_programa(int sig)
 {
     printf("Cerrando el control de clientes inactivos...\n");
 
-
     printf("Guardando datos del arbol en el fichero...\n");
     guardar_fichero(raizarbol);
+
+    printf("Cerrando log del servidor...\n");
+    registrando_en_logfile(CIERRE);
+    fclose(logfile);
 
     printf("Cerrando clientes...\n");
     cerrar_clientes(vector_clientes, num_clientes);
@@ -134,7 +145,7 @@ void cerrar_programa(int sig)
     exit(0);
 }
 
-operacion_arbol()
+void operacion_arbol(void)
 {
     switch(peticion.codigo_operacion)
     {
@@ -192,10 +203,10 @@ operacion_arbol()
             respuesta.codigo_error=ERROR_NO_BAJA;
         }
         break;
-
-
-    return;
     }
+    registrando_en_logfile(OPERACION);
+
+   return;
 }
 
 
@@ -324,6 +335,35 @@ void liberar_memoria_compartida(int memoria_compartida)
     shmctl(memoria_compartida, IPC_RMID, 0);
 }
 
+void registrando_en_logfile(int tipo_operacion)
+{
+    char buff[20];
+    struct tm *sTm;
 
+    time_t now = time (0);
+    sTm = gmtime (&now);
+
+    strftime (buff, sizeof(buff), "%Y-%m-%d %H:%M:%S", sTm);
+
+    switch(tipo_operacion)
+    {
+        case INICIAR:
+        fprintf(logfile,"\n\n*****%s SERVIDOR INICIADO CON %d CLIENTES MAXIMOS*****\n",buff,max_clientes);
+
+        break;
+
+        case OPERACION:
+        fprintf(logfile,"%s: Cliente: %ld -> Operación: %d -> Dato: %d -> Respuesta del servidor: %d   \n", buff, peticion.tipo,peticion.codigo_operacion, *dato, respuesta.codigo_error);
+
+        break;
+
+        case CIERRE:
+                fprintf(logfile,"\n******************%s SERVIDOR CERRADO******************\n\n",buff);
+        break;
+    }
+
+
+    return;
+}
 
 
