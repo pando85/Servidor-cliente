@@ -81,9 +81,8 @@ int main()
         __fpurge(stdin);
         err=scanf("%d",&peticion.codigo_operacion);
 
-        if(peticion.codigo_operacion==1 || peticion.codigo_operacion==2 || peticion.codigo_operacion==3)
+        if(peticion.codigo_operacion==INSERTAR || peticion.codigo_operacion==BORRAR || peticion.codigo_operacion==BUSCAR)
         {
-
             printf("\nIntroduzca el dato:");
             __fpurge(stdin);
             err=scanf("%d",&dato);

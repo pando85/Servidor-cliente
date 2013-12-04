@@ -49,6 +49,7 @@ int main(int argc, char *argv[])
         perror("\n¡ERROR!No se puede crear el hilo para el control de clientes inactivos.\n\n");
     }
 
+    // Bloqueo de la señal SIGALRM para el hilo principal del programa
     sigemptyset(&senyal_bloqueada);
     sigaddset(&senyal_bloqueada,SIGALRM);
     error = pthread_sigmask(SIG_BLOCK, &senyal_bloqueada, NULL);

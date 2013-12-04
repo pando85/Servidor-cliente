@@ -1,20 +1,20 @@
-/*****************************************************************/
-/* Nombre: buscar.c                                                       */
-/* Contiene dos funciones para buscar elementos en el árbol:              */
-/* Buscar()                                                               */
-/* BuscarPadre()                                                          */
-/*****************************************************************/
+/*
+ * Nombre: buscar.c
+ * Contiene dos funciones para buscar elementos en el árbol:
+ * Buscar()
+ * BuscarPadre()
+ */
 
 #include "arbol.h"
 
 
-/*****************************************************************/
-/* Nombre: buscar()                                                       */
-/* Descripción: Busca un elemento por el árbol.                           */
-/* Argumentos: 	Puntero a la raíz del árbol , dato a buscar.              */
-/* Valor Devuelto: Puntero al nodo o NULL si no encuentra el dato         */
-/* Alexander Gil Casas. 2013.                                             */
-/*****************************************************************/
+/*
+ * Nombre: buscar()
+ * Descripción: Busca un elemento por el árbol.
+ * Argumentos: 	Puntero a la raíz del árbol , dato a buscar.
+ * Valor Devuelto: Puntero al nodo o NULL si no encuentra el dato
+ * Alexander Gil Casas. 2013.
+ */
 
 Nodo* buscar(Nodo* raiz,int d)
 {

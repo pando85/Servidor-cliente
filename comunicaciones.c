@@ -18,6 +18,8 @@
  * cerrar_semaforo()
  * liberar_memoria_compartida()
  * operacion_arbol()
+ * registrando_en_logfile()
+ *
  */
 
 
